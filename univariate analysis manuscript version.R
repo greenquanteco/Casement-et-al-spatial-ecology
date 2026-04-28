@@ -355,6 +355,44 @@ for(i in 2:nmodels){
 ## 2b: pele
 ## 2c: sihi
 ## 2d: tast
+fx <- dx[,c("rich", "pele", "sihi", "tast")]
+fx$type <- ex$type
+    
+cols <- c("olivedrab", "steelblue", "orchid3")
+
+fig.name <- "figure_02.jpg"
+jpeg(fig.name, width=8, height=8, units="in", res=600)
+par(mfrow=c(2,2), bty="n", las=1, lend=1, mar=c(5.1, 5.1, 1.7, 1.1),
+    cex.axis=1.4, cex.lab=1.5, oma=c(0, 0, 0.2, 0), xpd=NA)
+boxplot(rich~type, data=fx, col=cols, xaxt="n",
+        ylab="Species richness", xlab="Site type", ylim=c(0, 9))
+axis(side=1, at=1:3, labels=c("Rural", "Suburban", "Urban"))
+text(1:3, c(5.27, 7.34, 5.30), "a", cex=1.5)
+title(main="a", adj=0, cex.main=2.5)
+boxplot(pele~type, data=fx, col=cols, xaxt="n",
+        ylab=expression(italic("P. leucopus")~population~density~(italic(n)/ha)),
+        xlab="Site type", ylim=c(0, 20))
+title(main="b", adj=0, cex.main=2.5)
+axis(side=1, at=1:3, labels=c("Rural", "Suburban", "Urban"))
+text(1:3, c(6.85, 17.23, 12.39), c("a", "b", "ab"), cex=1.5)
+boxplot(sihi~type, data=fx, col=cols, xaxt="n",
+        ylab=expression(italic("S. hispidus")~population~density~(italic(n)/ha)),
+        xlab="Site type", ylim=c(0, 2))
+title(main="c", adj=0, cex.main=2.5)
+axis(side=1, at=1:3, labels=c("Rural", "Suburban", "Urban"))
+text(1:3, c(1.19, 1.69, 0.04)+0.05, c("a", "a", "b"), cex=1.5)
+boxplot(tast~type, data=fx, col=cols, xaxt="n", ylim=c(0, 3),
+        ylab=expression(italic("T. striatus")~population~density~(italic(n)/ha)),
+        xlab="Site type", yaxt="n")
+axis(side=1, at=1:3, labels=c("Rural", "Suburban", "Urban"))
+axis(side=2, at=0:3)
+title(main="d", adj=0, cex.main=2.5)
+text(1:3, c(0.14, 0.88, 1.42), c("a", "b", "b"), cex=1.5)
+dev.off()
+
+
+
+
 
 # figure 3: nmds (other script)
 
