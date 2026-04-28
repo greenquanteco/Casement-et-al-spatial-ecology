@@ -1,0 +1,28 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# RStudio project files
+.Rproj.user/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Temporary / log files
+*.log
+*.tmp
+
+# LaTeX / Quarto build clutter
+*.aux
+*.out
+*.toc
+
+# Optional: ignore large or regenerable outputs
+figures/derived/
+output/
+tables/
+
+# Optional: private notes
+docs/private_notes.md

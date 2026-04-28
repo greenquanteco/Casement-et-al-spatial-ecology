@@ -1,0 +1,183 @@
+===================
+=== areaha omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ areaha
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     31.492                     
+2        21     30.196  1   1.2965   0.2549
+
+=== areaha AUC ===
+Area under the curve: 0.6308 
+
+===================
+=== shape omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ shape
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     31.492                     
+2        21     31.460  1 0.031855   0.8583
+
+=== shape AUC ===
+Area under the curve: 0.5 
+
+===================
+=== age omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ age
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     31.492                     
+2        21     30.838  1  0.65467   0.4184
+
+=== age AUC ===
+Area under the curve: 0.6077 
+
+===================
+=== island omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ island
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     31.492                     
+2        21     28.936  1   2.5567   0.1098
+
+=== island AUC ===
+Area under the curve: 0.85 
+
+===================
+=== pct_imp_perim omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ pct_imp_perim
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)   
+1        22     31.492                        
+2        21     23.407  1   8.0852 0.004463 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== pct_imp_perim AUC ===
+Area under the curve: 0.7923 
+
+===================
+=== tree omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ tree
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     31.492                     
+2        21     31.436  1 0.056363   0.8123
+
+=== tree AUC ===
+Area under the curve: 0.5385 
+
+===================
+=== imp omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ imp
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)  
+1        22     31.492                       
+2        21     25.867  1    5.625  0.01771 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== imp AUC ===
+Area under the curve: 0.7538 
+
+===================
+=== forest omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ forest
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)  
+1        22     31.492                       
+2        21     28.200  1   3.2926  0.06959 .
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== forest AUC ===
+Area under the curve: 0.6923 
+
+===================
+=== dev omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ dev
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)   
+1        22     31.492                        
+2        21     21.197  1   10.295 0.001334 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== dev AUC ===
+Area under the curve: 0.8385 
+
+===================
+=== open omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ open
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)   
+1        22     31.492                        
+2        21     23.561  1   7.9316 0.004858 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== open AUC ===
+Area under the curve: 0.7885 
+
+===================
+=== popden omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ popden
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)  
+1        22     31.492                       
+2        21     25.054  1    6.438  0.01117 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== popden AUC ===
+Area under the curve: 0.8769 
+
+===================
+=== income omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ income
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)  
+1        22     31.492                       
+2        21     27.248  1   4.2445  0.03938 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== income AUC ===
+Area under the curve: 0.6846 
+
+===================
+=== povrate omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ povrate
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     31.492                     
+2        21     31.430  1 0.061879   0.8036
+
+=== povrate AUC ===
+Area under the curve: 0.4346 
+

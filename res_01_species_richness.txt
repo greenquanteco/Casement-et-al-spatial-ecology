@@ -1,0 +1,117 @@
+=== areaha vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ areaha
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     18.616  1   1.1427   0.2851 
+
+=== shape vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ shape
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     18.751  1   1.0076   0.3155 
+
+=== age vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ age
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     19.374  1  0.38512   0.5349 
+
+=== island vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ island
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     19.295  1  0.46357    0.496 
+
+=== pct_imp_perim vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ pct_imp_perim
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     18.524  1   1.2347   0.2665 
+
+=== tree vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ tree
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     19.727  1 0.031656   0.8588 
+
+=== imp vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ imp
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     19.533  1  0.22617   0.6344 
+
+=== forest vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ forest
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     19.000  1  0.75936   0.3835 
+
+=== dev vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ dev
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     18.864  1  0.89495   0.3441 
+
+=== open vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ open
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     19.518  1   0.2409   0.6236 
+
+=== popden vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ popden
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     18.876  1  0.88294   0.3474 
+
+=== income vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ income
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     18.833  1  0.92564    0.336 
+
+=== povrate vs Null ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ povrate
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     19.759                     
+2        21     19.708  1 0.051022   0.8213 
+

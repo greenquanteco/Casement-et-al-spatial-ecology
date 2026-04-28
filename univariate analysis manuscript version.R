@@ -2,6 +2,7 @@
 # and presence/absence data
 library(vegan)
 library(dunn.test)
+library(pROC)
 
 # final explanatory variable matrix @ 100 m
 in.name <- "dat_explanatory_0100_2026-04-27.csv"
@@ -62,110 +63,303 @@ use.cols <- c("areaha", "shape", "age", "island", "pct_imp_perim",
               "tree", "imp", "forest", "dev", "open",
               "popden", "income", "povrate")
 dex <- ex[,use.cols]
+nmodels <- length(use.cols)+1
+
+#####################################################################
 
 # species richness - Poisson GLM
 d01 <- data.frame(y=dx$rich, dex)
 
-mod01.01 <- glm(y~areaha,        data=d01, family=poisson)
-mod01.02 <- glm(y~shape,         data=d01, family=poisson)
-mod01.03 <- glm(y~age,           data=d01, family=poisson)
-mod01.04 <- glm(y~island,        data=d01, family=poisson)
-mod01.05 <- glm(y~pct_imp_perim, data=d01, family=poisson)
-mod01.06 <- glm(y~tree,          data=d01, family=poisson)
-mod01.07 <- glm(y~imp,           data=d01, family=poisson)
-mod01.08 <- glm(y~forest,        data=d01, family=poisson)
-mod01.09 <- glm(y~dev,           data=d01, family=poisson)
-mod01.10 <- glm(y~open,          data=d01, family=poisson)
-mod01.11 <- glm(y~popden,        data=d01, family=poisson)
-mod01.12 <- glm(y~income,        data=d01, family=poisson)
-mod01.13 <- glm(y~povrate,       data=d01, family=poisson)
+list.spprich <- vector("list", length=nmodels)
+list.spprich[[1]] <- glm(y~1,             data=d01, family=poisson)
+list.spprich[[2]] <- glm(y~areaha,        data=d01, family=poisson)
+list.spprich[[3]] <- glm(y~shape,         data=d01, family=poisson)
+list.spprich[[4]] <- glm(y~age,           data=d01, family=poisson)
+list.spprich[[5]] <- glm(y~island,        data=d01, family=poisson)
+list.spprich[[6]] <- glm(y~pct_imp_perim, data=d01, family=poisson)
+list.spprich[[7]] <- glm(y~tree,          data=d01, family=poisson)
+list.spprich[[8]] <- glm(y~imp,           data=d01, family=poisson)
+list.spprich[[9]] <- glm(y~forest,        data=d01, family=poisson)
+list.spprich[[10]] <- glm(y~dev,           data=d01, family=poisson)
+list.spprich[[11]] <- glm(y~open,          data=d01, family=poisson)
+list.spprich[[12]] <- glm(y~popden,        data=d01, family=poisson)
+list.spprich[[13]] <- glm(y~income,        data=d01, family=poisson)
+list.spprich[[14]] <- glm(y~povrate,       data=d01, family=poisson)
 
+# write omnibus tests out in text file
+out.name <- "res_01_species_richness.txt"
+
+# clear output file
+cat("", file=out.name)
+
+# fill output file in loop
+for(i in 2:nmodels){
+    lrt <- anova(list.spprich[[1]], list.spprich[[i]], test="Chisq")
+    iname <- use.cols[i-1]
+    block <- paste(
+        sprintf("=== %s vs Null ===", iname),
+        paste(capture.output(lrt), collapse = "\n"),
+        sep = "\n"
+    )
+    cat(block, "\n\n", file = out.name, append = TRUE)
+}#i
+
+#####################################################################
 
 # PELE pop density - linear regression
 d02 <- data.frame(y=dx$pele, dex)
+list.pelepop <- vector("list", length=nmodels)
 
-mod02.01 <- lm(y~areaha,        data=d02)
-mod02.02 <- lm(y~shape,         data=d02)
-mod02.03 <- lm(y~age,           data=d02)
-mod02.04 <- lm(y~island,        data=d02)
-mod02.05 <- lm(y~pct_imp_perim, data=d02)
-mod02.06 <- lm(y~tree,          data=d02)
-mod02.07 <- lm(y~imp,           data=d02)
-mod02.08 <- lm(y~forest,        data=d02)
-mod02.09 <- lm(y~dev,           data=d02)
-mod02.10 <- lm(y~open,          data=d02)
-mod02.11 <- lm(y~popden,        data=d02)
-mod02.12 <- lm(y~income,        data=d02)
-mod02.13 <- lm(y~povrate,       data=d02)
+list.pelepop[[01]] <- lm(y~1,             data=d02)
+list.pelepop[[02]] <- lm(y~areaha,        data=d02)
+list.pelepop[[03]] <- lm(y~shape,         data=d02)
+list.pelepop[[04]] <- lm(y~age,           data=d02)
+list.pelepop[[05]] <- lm(y~island,        data=d02)
+list.pelepop[[06]] <- lm(y~pct_imp_perim, data=d02)
+list.pelepop[[07]] <- lm(y~tree,          data=d02)
+list.pelepop[[08]] <- lm(y~imp,           data=d02)
+list.pelepop[[09]] <- lm(y~forest,        data=d02)
+list.pelepop[[10]] <- lm(y~dev,           data=d02)
+list.pelepop[[11]] <- lm(y~open,          data=d02)
+list.pelepop[[12]] <- lm(y~popden,        data=d02)
+list.pelepop[[13]] <- lm(y~income,        data=d02)
+list.pelepop[[14]] <- lm(y~povrate,       data=d02)
 
+# write omnibus tests out in text file
+out.name <- "res_02_pele_pop_den.txt"
+
+# clear output file
+cat("", file=out.name)
+
+# fill output file in loop
+
+for(i in 2:nmodels){
+    cat("===================\n", file = out.name, append=TRUE)
+    
+    omnibus <- anova(list.pelepop[[1]], list.pelepop[[i]], test="F")
+    anovatab <- anova(list.pelepop[[i]])
+    
+    iname <- use.cols[i-1]
+    block <- paste(
+        sprintf("=== %s omnibus test ===", iname),
+        paste(capture.output(omnibus), collapse = "\n"),
+        "",
+        sprintf("=== %s ANOVA table ===", iname),
+        paste(capture.output(anovatab), collapse="\n"),
+        sep="\n"
+    )
+    cat(block, "\n\n", file = out.name, append = TRUE)
+}#i
+
+#####################################################################
 
 # ESG6 pop density - linear regression
 d03 <- data.frame(y=kx$k6, dex)
+list.k6pop <- vector("list", length=nmodels)
 
-mod03.01 <- lm(y~areaha,        data=d03)
-mod03.02 <- lm(y~shape,         data=d03)
-mod03.03 <- lm(y~age,           data=d03)
-mod03.04 <- lm(y~island,        data=d03)
-mod03.05 <- lm(y~pct_imp_perim, data=d03)
-mod03.06 <- lm(y~tree,          data=d03)
-mod03.07 <- lm(y~imp,           data=d03)
-mod03.08 <- lm(y~forest,        data=d03)
-mod03.09 <- lm(y~dev,           data=d03)
-mod03.10 <- lm(y~open,          data=d03)
-mod03.11 <- lm(y~popden,        data=d03)
-mod03.12 <- lm(y~income,        data=d03)
-mod03.13 <- lm(y~povrate,       data=d03)
+list.k6pop[[01]] <- lm(y~1,             data=d03)
+list.k6pop[[02]] <- lm(y~areaha,        data=d03)
+list.k6pop[[03]] <- lm(y~shape,         data=d03)
+list.k6pop[[04]] <- lm(y~age,           data=d03)
+list.k6pop[[05]] <- lm(y~island,        data=d03)
+list.k6pop[[06]] <- lm(y~pct_imp_perim, data=d03)
+list.k6pop[[07]] <- lm(y~tree,          data=d03)
+list.k6pop[[08]] <- lm(y~imp,           data=d03)
+list.k6pop[[09]] <- lm(y~forest,        data=d03)
+list.k6pop[[10]] <- lm(y~dev,           data=d03)
+list.k6pop[[11]] <- lm(y~open,          data=d03)
+list.k6pop[[12]] <- lm(y~popden,        data=d03)
+list.k6pop[[13]] <- lm(y~income,        data=d03)
+list.k6pop[[14]] <- lm(y~povrate,       data=d03)
+
+# write omnibus tests out in text file
+out.name <- "res_03_esg6_pop_den.txt"
+
+# clear output file
+cat("", file=out.name)
+
+# fill output file in loop
+
+for(i in 2:nmodels){
+    cat("===================\n", file = out.name, append=TRUE)
+    
+    omnibus <- anova(list.k6pop[[1]], list.k6pop[[i]], test="F")
+    anovatab <- anova(list.k6pop[[i]])
+    
+    iname <- use.cols[i-1]
+    block <- paste(
+        sprintf("=== %s omnibus test ===", iname),
+        paste(capture.output(omnibus), collapse = "\n"),
+        "",
+        sprintf("=== %s ANOVA table ===", iname),
+        paste(capture.output(anovatab), collapse="\n"),
+        sep="\n"
+    )
+    cat(block, "\n\n", file = out.name, append = TRUE)
+}#i
+
+
+#####################################################################
 
 # SIHI presence/absence - logistic regression
 d04 <- data.frame(y=dx$sihi, dex)
 d04$y <- ifelse(d04$y > 0, 1, 0)
+list.sihi <- vector("list", length=nmodels)
 
-mod04.01 <- glm(y~areaha,        data=d04, family=binomial)
-mod04.02 <- glm(y~shape,         data=d04, family=binomial)
-mod04.03 <- glm(y~age,           data=d04, family=binomial)
-mod04.04 <- glm(y~island,        data=d04, family=binomial)
-mod04.05 <- glm(y~pct_imp_perim, data=d04, family=binomial)
-mod04.06 <- glm(y~tree,          data=d04, family=binomial)
-mod04.07 <- glm(y~imp,           data=d04, family=binomial)
-mod04.08 <- glm(y~forest,        data=d04, family=binomial)
-mod04.09 <- glm(y~dev,           data=d04, family=binomial)
-mod04.10 <- glm(y~open,          data=d04, family=binomial)
-mod04.11 <- glm(y~popden,        data=d04, family=binomial)
-mod04.12 <- glm(y~income,        data=d04, family=binomial)
-mod04.13 <- glm(y~povrate,       data=d04, family=binomial)
+list.sihi[[01]] <- glm(y~1,             data=d04, family=binomial)
+list.sihi[[02]] <- glm(y~areaha,        data=d04, family=binomial)
+list.sihi[[03]] <- glm(y~shape,         data=d04, family=binomial)
+list.sihi[[04]] <- glm(y~age,           data=d04, family=binomial)
+list.sihi[[05]] <- glm(y~island,        data=d04, family=binomial)
+list.sihi[[06]] <- glm(y~pct_imp_perim, data=d04, family=binomial)
+list.sihi[[07]] <- glm(y~tree,          data=d04, family=binomial)
+list.sihi[[08]] <- glm(y~imp,           data=d04, family=binomial)
+list.sihi[[09]] <- glm(y~forest,        data=d04, family=binomial)
+list.sihi[[10]] <- glm(y~dev,           data=d04, family=binomial)
+list.sihi[[11]] <- glm(y~open,          data=d04, family=binomial)
+list.sihi[[12]] <- glm(y~popden,        data=d04, family=binomial)
+list.sihi[[13]] <- glm(y~income,        data=d04, family=binomial)
+list.sihi[[14]] <- glm(y~povrate,       data=d04, family=binomial)
 
+# write omnibus tests out in text file
+out.name <- "res_04_sihi_pres.txt"
+
+# clear output file
+cat("", file=out.name)
+
+# fill output file in loop
+
+for(i in 2:nmodels){
+    cat("===================\n", file = out.name, append=TRUE)
+    
+    omnibus <- anova(list.sihi[[1]], list.sihi[[i]], test="Chisq")
+
+    p1 <- predict(list.sihi[[i]], type="response")
+    roc1 <- roc(d04$y~p1, plot=FALSE)$auc
+    
+    iname <- use.cols[i-1]
+    block <- paste(
+        sprintf("=== %s omnibus test ===", iname),
+        paste(capture.output(omnibus), collapse = "\n"),
+        "",
+        sprintf("=== %s AUC ===", iname),
+        paste(capture.output(roc1), collapse="\n"),
+        sep="\n"
+    )
+    cat(block, "\n\n", file = out.name, append = TRUE)
+}#i
+
+#####################################################################
 
 # ESG2 pop density - linear regression
 d05 <- data.frame(y=kx$k2, dex)
-mod05.01 <- lm(y~areaha,        data=d05)
-mod05.02 <- lm(y~shape,         data=d05)
-mod05.03 <- lm(y~age,           data=d05)
-mod05.04 <- lm(y~island,        data=d05)
-mod05.05 <- lm(y~pct_imp_perim, data=d05)
-mod05.06 <- lm(y~tree,          data=d05)
-mod05.07 <- lm(y~imp,           data=d05)
-mod05.08 <- lm(y~forest,        data=d05)
-mod05.09 <- lm(y~dev,           data=d05)
-mod05.10 <- lm(y~open,          data=d05)
-mod05.11 <- lm(y~popden,        data=d05)
-mod05.12 <- lm(y~income,        data=d05)
-mod05.13 <- lm(y~povrate,       data=d05)
+list.k2pop <- vector("list", length=nmodels)
 
+list.k2pop[[01]] <- lm(y~1,             data=d05)
+list.k2pop[[02]] <- lm(y~areaha,        data=d05)
+list.k2pop[[03]] <- lm(y~shape,         data=d05)
+list.k2pop[[04]] <- lm(y~age,           data=d05)
+list.k2pop[[05]] <- lm(y~island,        data=d05)
+list.k2pop[[06]] <- lm(y~pct_imp_perim, data=d05)
+list.k2pop[[07]] <- lm(y~tree,          data=d05)
+list.k2pop[[08]] <- lm(y~imp,           data=d05)
+list.k2pop[[09]] <- lm(y~forest,        data=d05)
+list.k2pop[[10]] <- lm(y~dev,           data=d05)
+list.k2pop[[11]] <- lm(y~open,          data=d05)
+list.k2pop[[12]] <- lm(y~popden,        data=d05)
+list.k2pop[[13]] <- lm(y~income,        data=d05)
+list.k2pop[[14]] <- lm(y~povrate,       data=d05)
+
+# write omnibus tests out in text file
+out.name <- "res_05_esg2_pop_den.txt"
+
+# clear output file
+cat("", file=out.name)
+
+# fill output file in loop
+
+for(i in 2:nmodels){
+    cat("===================\n", file = out.name, append=TRUE)
+    
+    omnibus <- anova(list.k2pop[[1]], list.k2pop[[i]], test="F")
+    anovatab <- anova(list.k2pop[[i]])
+    
+    iname <- use.cols[i-1]
+    block <- paste(
+        sprintf("=== %s omnibus test ===", iname),
+        paste(capture.output(omnibus), collapse = "\n"),
+        "",
+        sprintf("=== %s ANOVA table ===", iname),
+        paste(capture.output(anovatab), collapse="\n"),
+        sep="\n"
+    )
+    cat(block, "\n\n", file = out.name, append = TRUE)
+}#i
+
+#####################################################################
 
 # TAST presence/absence - logistic regression
 d06 <- data.frame(y=dx$tast, dex)
 d06$y <- ifelse(d06$y > 0, 1, 0)
+list.tast <- vector("list", length=nmodels)
 
-mod06.01 <- glm(y~areaha,        data=d06, family=binomial)
-mod06.02 <- glm(y~shape,         data=d06, family=binomial)
-mod06.03 <- glm(y~age,           data=d06, family=binomial)
-mod06.04 <- glm(y~island,        data=d06, family=binomial)
-mod06.05 <- glm(y~pct_imp_perim, data=d06, family=binomial)
-mod06.06 <- glm(y~tree,          data=d06, family=binomial)
-mod06.07 <- glm(y~imp,           data=d06, family=binomial)
-mod06.08 <- glm(y~forest,        data=d06, family=binomial)
-mod06.09 <- glm(y~dev,           data=d06, family=binomial)
-mod06.10 <- glm(y~open,          data=d06, family=binomial)
-mod06.11 <- glm(y~popden,        data=d06, family=binomial)
-mod06.12 <- glm(y~income,        data=d06, family=binomial)
-mod06.13 <- glm(y~povrate,       data=d06, family=binomial)
+list.tast[[01]] <- glm(y~1,             data=d06, family=binomial)
+list.tast[[02]] <- glm(y~areaha,        data=d06, family=binomial)
+list.tast[[03]] <- glm(y~shape,         data=d06, family=binomial)
+list.tast[[04]] <- glm(y~age,           data=d06, family=binomial)
+list.tast[[05]] <- glm(y~island,        data=d06, family=binomial)
+list.tast[[06]] <- glm(y~pct_imp_perim, data=d06, family=binomial)
+list.tast[[07]] <- glm(y~tree,          data=d06, family=binomial)
+list.tast[[08]] <- glm(y~imp,           data=d06, family=binomial)
+list.tast[[09]] <- glm(y~forest,        data=d06, family=binomial)
+list.tast[[10]] <- glm(y~dev,           data=d06, family=binomial)
+list.tast[[11]] <- glm(y~open,          data=d06, family=binomial)
+list.tast[[12]] <- glm(y~popden,        data=d06, family=binomial)
+list.tast[[13]] <- glm(y~income,        data=d06, family=binomial)
+list.tast[[14]] <- glm(y~povrate,       data=d06, family=binomial)
+
+# write omnibus tests out in text file
+out.name <- "res_06_tast_pres.txt"
+
+# clear output file
+cat("", file=out.name)
+
+# fill output file in loop
+
+for(i in 2:nmodels){
+    cat("===================\n", file = out.name, append=TRUE)
+    
+    omnibus <- anova(list.tast[[1]], list.tast[[i]], test="Chisq")
+    
+    p1 <- predict(list.tast[[i]], type="response")
+    roc1 <- roc(d06$y~p1, plot=FALSE)$auc
+    
+    iname <- use.cols[i-1]
+    block <- paste(
+        sprintf("=== %s omnibus test ===", iname),
+        paste(capture.output(omnibus), collapse = "\n"),
+        "",
+        sprintf("=== %s AUC ===", iname),
+        paste(capture.output(roc1), collapse="\n"),
+        sep="\n"
+    )
+    cat(block, "\n\n", file = out.name, append = TRUE)
+}#i
+
+#####################################################################
+
+# produce figures 
+
+# figure 2: 2x2 boxplots y vs. urbanization
+## 2a: rich
+## 2b: pele
+## 2c: sihi
+## 2d: tast
+
+# figure 3: nmds (other script)
+
+# figure 4: 2 x 2 scatterplots
+## 4a: pele vs. pip; tast vs. pip (right axis)
+## 4b: pele vs. imp; tast vs. imp (right axis)
+## 4c: pele vs. open
+## 4d: sihi vs. age

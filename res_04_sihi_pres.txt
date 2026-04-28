@@ -1,0 +1,175 @@
+===================
+=== areaha omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ areaha
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     29.720                     
+2        21     29.436  1   0.2838   0.5942
+
+=== areaha AUC ===
+Area under the curve: 0.6833 
+
+===================
+=== shape omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ shape
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     29.720                     
+2        21     29.199  1  0.52132   0.4703
+
+=== shape AUC ===
+Area under the curve: 0.6417 
+
+===================
+=== age omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ age
+  Resid. Df Resid. Dev Df Deviance  Pr(>Chi)    
+1        22     29.720                          
+2        21     17.514  1   12.206 0.0004764 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== age AUC ===
+Area under the curve: 0.8917 
+
+===================
+=== island omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ island
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     29.720                     
+2        21     28.967  1  0.75322   0.3855
+
+=== island AUC ===
+Area under the curve: 0.5542 
+
+===================
+=== pct_imp_perim omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ pct_imp_perim
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     29.720                     
+2        21     27.509  1    2.211    0.137
+
+=== pct_imp_perim AUC ===
+Area under the curve: 0.7333 
+
+===================
+=== tree omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ tree
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22      29.72                     
+2        21      27.57  1   2.1499   0.1426
+
+=== tree AUC ===
+Area under the curve: 0.6833 
+
+===================
+=== imp omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ imp
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     29.720                     
+2        21     28.385  1   1.3355   0.2478
+
+=== imp AUC ===
+Area under the curve: 0.6333 
+
+===================
+=== forest omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ forest
+  Resid. Df Resid. Dev Df  Deviance Pr(>Chi)
+1        22     29.720                      
+2        21     29.718  1 0.0026618   0.9589
+
+=== forest AUC ===
+Area under the curve: 0.55 
+
+===================
+=== dev omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ dev
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     29.720                     
+2        21     28.306  1   1.4144   0.2343
+
+=== dev AUC ===
+Area under the curve: 0.65 
+
+===================
+=== open omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ open
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)   
+1        22     29.720                        
+2        21     21.136  1   8.5844 0.003391 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== open AUC ===
+Area under the curve: 0.7625 
+
+===================
+=== popden omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ popden
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     29.720                     
+2        21     27.902  1    1.818   0.1775
+
+=== popden AUC ===
+Area under the curve: 0.7 
+
+===================
+=== income omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ income
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)
+1        22     29.720                     
+2        21     29.312  1  0.40831   0.5228
+
+=== income AUC ===
+Area under the curve: 0.8 
+
+===================
+=== povrate omnibus test ===
+Analysis of Deviance Table
+
+Model 1: y ~ 1
+Model 2: y ~ povrate
+  Resid. Df Resid. Dev Df Deviance Pr(>Chi)  
+1        22     29.720                       
+2        21     26.478  1   3.2425  0.07175 .
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== povrate AUC ===
+Area under the curve: 0.5958 
+
