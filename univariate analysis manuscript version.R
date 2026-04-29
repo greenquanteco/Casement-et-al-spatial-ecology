@@ -11,13 +11,17 @@ ex <- read.csv(in.name)
 # final response variable matrix - by species
 in.name <- "dat_response_species_2026-04-27.csv"
 dx <- read.csv(in.name)
+dx2 <- read.csv("dat_rodent_popden_site_2025-01-24.csv")
+dx2$rich <- apply(dx2[,-1], 1, function(x){length(which(x>0))})
 
 # final response variable matrix - by trait group
 in.name <- "dat_response_traits_2026-04-27.csv"
 kx <- read.csv(in.name)
 
+
 # put site names on rownames
 rownames(dx) <- dx$site
+rownames(dx2) <- dx2$site
 rownames(kx) <- kx$site
 rownames(ex) <- ex$site
 
@@ -25,17 +29,20 @@ rownames(ex) <- ex$site
 # means dataframes in same row order by site!
 rownames(dx) == rownames(kx)
 rownames(ex) == rownames(kx)
+rownames(dx2) == rownames(dx)
+
 
 # delete site columns
 dx$site <- NULL
 ex$site <- NULL
 kx$site <- NULL
-
+dx2$site <- NULL
 
 
 # univariate vs. urbanization
 ## species richness
 kruskal.test(dx$rich~ex$type)
+kruskal.test(dx2$rich~ex$type)
 
 ## esg richness
 kruskal.test(kx$rich~ex$type)
@@ -138,6 +145,54 @@ for(i in 2:nmodels){
     
     omnibus <- anova(list.pelepop[[1]], list.pelepop[[i]], test="F")
     anovatab <- anova(list.pelepop[[i]])
+    
+    iname <- use.cols[i-1]
+    block <- paste(
+        sprintf("=== %s omnibus test ===", iname),
+        paste(capture.output(omnibus), collapse = "\n"),
+        "",
+        sprintf("=== %s ANOVA table ===", iname),
+        paste(capture.output(anovatab), collapse="\n"),
+        sep="\n"
+    )
+    cat(block, "\n\n", file = out.name, append = TRUE)
+}#i
+
+#####################################################################
+
+# PELE pop density - linear regression - 1/24/25 data version
+
+d02a <- data.frame(y=dx2$pele, dex)
+list.pelepop2 <- vector("list", length=nmodels)
+
+list.pelepop2[[01]] <- lm(y~1,             data=d02a)
+list.pelepop2[[02]] <- lm(y~areaha,        data=d02a)
+list.pelepop2[[03]] <- lm(y~shape,         data=d02a)
+list.pelepop2[[04]] <- lm(y~age,           data=d02a)
+list.pelepop2[[05]] <- lm(y~island,        data=d02a)
+list.pelepop2[[06]] <- lm(y~pct_imp_perim, data=d02a)
+list.pelepop2[[07]] <- lm(y~tree,          data=d02a)
+list.pelepop2[[08]] <- lm(y~imp,           data=d02a)
+list.pelepop2[[09]] <- lm(y~forest,        data=d02a)
+list.pelepop2[[10]] <- lm(y~dev,           data=d02a)
+list.pelepop2[[11]] <- lm(y~open,          data=d02a)
+list.pelepop2[[12]] <- lm(y~popden,        data=d02a)
+list.pelepop2[[13]] <- lm(y~income,        data=d02a)
+list.pelepop2[[14]] <- lm(y~povrate,       data=d02a)
+
+# write omnibus tests out in text file
+out.name <- "res_02_pele_pop_den_v2.txt"
+
+# clear output file
+cat("", file=out.name)
+
+# fill output file in loop
+
+for(i in 2:nmodels){
+    cat("===================\n", file = out.name, append=TRUE)
+    
+    omnibus <- anova(list.pelepop2[[1]], list.pelepop2[[i]], test="F")
+    anovatab <- anova(list.pelepop2[[i]])
     
     iname <- use.cols[i-1]
     block <- paste(

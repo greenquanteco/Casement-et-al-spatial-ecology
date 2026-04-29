@@ -1,0 +1,258 @@
+===================
+=== areaha omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ areaha
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1     22 415.28                           
+2     21 405.12  1    10.163 0.5268  0.476
+
+=== areaha ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value Pr(>F)
+areaha     1  10.16  10.163  0.5268  0.476
+Residuals 21 405.12  19.291                
+
+===================
+=== shape omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ shape
+  Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+1     22 415.28                              
+2     21 349.70  1     65.58 3.9381 0.06042 .
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== shape ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value  Pr(>F)  
+shape      1  65.58  65.580  3.9381 0.06042 .
+Residuals 21 349.70  16.653                  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+===================
+=== age omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ age
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1     22 415.28                           
+2     21 397.51  1    17.773 0.9389 0.3436
+
+=== age ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value Pr(>F)
+age        1  17.77  17.773  0.9389 0.3436
+Residuals 21 397.51  18.929                
+
+===================
+=== island omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ island
+  Res.Df    RSS Df Sum of Sq     F Pr(>F)
+1     22 415.28                          
+2     21 415.27  1 0.0087245 4e-04 0.9834
+
+=== island ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value Pr(>F)
+island     1   0.01  0.0087   4e-04 0.9834
+Residuals 21 415.27 19.7750                
+
+===================
+=== pct_imp_perim omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ pct_imp_perim
+  Res.Df    RSS Df Sum of Sq      F   Pr(>F)   
+1     22 415.28                                
+2     21 283.12  1    132.16 9.8031 0.005049 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== pct_imp_perim ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+              Df Sum Sq Mean Sq F value   Pr(>F)   
+pct_imp_perim  1 132.16 132.164  9.8031 0.005049 **
+Residuals     21 283.12  13.482                    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+===================
+=== tree omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ tree
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1     22 415.28                           
+2     21 407.68  1    7.6048 0.3917 0.5381
+
+=== tree ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value Pr(>F)
+tree       1   7.60  7.6048  0.3917 0.5381
+Residuals 21 407.68 19.4133                
+
+===================
+=== imp omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ imp
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1     22 415.28                           
+2     21 383.08  1    32.207 1.7656 0.1982
+
+=== imp ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value Pr(>F)
+imp        1  32.21  32.207  1.7656 0.1982
+Residuals 21 383.08  18.242                
+
+===================
+=== forest omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ forest
+  Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+1     22 415.28                              
+2     21 346.66  1    68.625 4.1572 0.05424 .
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== forest ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value  Pr(>F)  
+forest     1  68.62  68.625  4.1572 0.05424 .
+Residuals 21 346.66  16.508                  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+===================
+=== dev omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ dev
+  Res.Df    RSS Df Sum of Sq      F   Pr(>F)   
+1     22 415.28                                
+2     21 286.96  1    128.33 9.3912 0.005884 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== dev ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value   Pr(>F)   
+dev        1 128.33 128.327  9.3912 0.005884 **
+Residuals 21 286.96  13.665                    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+===================
+=== open omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ open
+  Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+1     22 415.28                              
+2     21 346.42  1    68.866 4.1747 0.05378 .
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== open ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value  Pr(>F)  
+open       1  68.87  68.866  4.1747 0.05378 .
+Residuals 21 346.42  16.496                  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+===================
+=== popden omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ popden
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1     22 415.28                           
+2     21 369.01  1    46.272 2.6333 0.1196
+
+=== popden ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value Pr(>F)
+popden     1  46.27  46.272  2.6333 0.1196
+Residuals 21 369.01  17.572                
+
+===================
+=== income omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ income
+  Res.Df    RSS Df Sum of Sq      F  Pr(>F)  
+1     22 415.28                              
+2     21 350.10  1    65.183 3.9098 0.06128 .
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+=== income ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value  Pr(>F)  
+income     1  65.18  65.183  3.9098 0.06128 .
+Residuals 21 350.10  16.671                  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 
+
+===================
+=== povrate omnibus test ===
+Analysis of Variance Table
+
+Model 1: y ~ 1
+Model 2: y ~ povrate
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
+1     22 415.28                           
+2     21 412.10  1    3.1827 0.1622 0.6912
+
+=== povrate ANOVA table ===
+Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value Pr(>F)
+povrate    1   3.18  3.1827  0.1622 0.6912
+Residuals 21 412.10 19.6239                
+
