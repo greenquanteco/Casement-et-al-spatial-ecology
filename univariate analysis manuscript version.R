@@ -11,16 +11,13 @@ ex <- read.csv(in.name)
 # final response variable matrix - by species
 in.name <- "dat_response_species_2026-04-27.csv"
 dx <- read.csv(in.name)
-dx2$rich <- apply(dx2[,-1], 1, function(x){length(which(x>0))})
 
 # final response variable matrix - by trait group
 in.name <- "dat_response_traits_2026-04-27.csv"
 kx <- read.csv(in.name)
 
-
 # put site names on rownames
 rownames(dx) <- dx$site
-rownames(dx2) <- dx2$site
 rownames(kx) <- kx$site
 rownames(ex) <- ex$site
 
@@ -30,18 +27,14 @@ rownames(dx) == rownames(kx)
 rownames(ex) == rownames(kx)
 rownames(dx2) == rownames(dx)
 
-
 # delete site columns
 dx$site <- NULL
 ex$site <- NULL
 kx$site <- NULL
-dx2$site <- NULL
-
 
 # univariate vs. urbanization
 ## species richness
 kruskal.test(dx$rich~ex$type)
-kruskal.test(dx2$rich~ex$type)
 
 ## esg richness
 kruskal.test(kx$rich~ex$type)
@@ -144,54 +137,6 @@ for(i in 2:nmodels){
     
     omnibus <- anova(list.pelepop[[1]], list.pelepop[[i]], test="F")
     anovatab <- anova(list.pelepop[[i]])
-    
-    iname <- use.cols[i-1]
-    block <- paste(
-        sprintf("=== %s omnibus test ===", iname),
-        paste(capture.output(omnibus), collapse = "\n"),
-        "",
-        sprintf("=== %s ANOVA table ===", iname),
-        paste(capture.output(anovatab), collapse="\n"),
-        sep="\n"
-    )
-    cat(block, "\n\n", file = out.name, append = TRUE)
-}#i
-
-#####################################################################
-
-# PELE pop density - linear regression - 1/24/25 data version
-
-d02a <- data.frame(y=dx2$pele, dex)
-list.pelepop2 <- vector("list", length=nmodels)
-
-list.pelepop2[[01]] <- lm(y~1,             data=d02a)
-list.pelepop2[[02]] <- lm(y~areaha,        data=d02a)
-list.pelepop2[[03]] <- lm(y~shape,         data=d02a)
-list.pelepop2[[04]] <- lm(y~age,           data=d02a)
-list.pelepop2[[05]] <- lm(y~island,        data=d02a)
-list.pelepop2[[06]] <- lm(y~pct_imp_perim, data=d02a)
-list.pelepop2[[07]] <- lm(y~tree,          data=d02a)
-list.pelepop2[[08]] <- lm(y~imp,           data=d02a)
-list.pelepop2[[09]] <- lm(y~forest,        data=d02a)
-list.pelepop2[[10]] <- lm(y~dev,           data=d02a)
-list.pelepop2[[11]] <- lm(y~open,          data=d02a)
-list.pelepop2[[12]] <- lm(y~popden,        data=d02a)
-list.pelepop2[[13]] <- lm(y~income,        data=d02a)
-list.pelepop2[[14]] <- lm(y~povrate,       data=d02a)
-
-# write omnibus tests out in text file
-out.name <- "res_02_pele_pop_den_v2.txt"
-
-# clear output file
-cat("", file=out.name)
-
-# fill output file in loop
-
-for(i in 2:nmodels){
-    cat("===================\n", file = out.name, append=TRUE)
-    
-    omnibus <- anova(list.pelepop2[[1]], list.pelepop2[[i]], test="F")
-    anovatab <- anova(list.pelepop2[[i]])
     
     iname <- use.cols[i-1]
     block <- paste(
@@ -400,6 +345,44 @@ for(i in 2:nmodels){
     cat(block, "\n\n", file = out.name, append = TRUE)
 }#i
 
+# generate model output tables for supplement
+prep.out <- function(Q, yname){
+    z <- lapply(Q, function(x){summary(x)$coefficients})
+    z <- do.call(rbind, z)
+    #z <- round(z, 3)
+    z <- formatC(z, format="f", digits=3)
+    z <- gsub("-0.000", "zebra", z)
+    z <- gsub("0.000", "<0.001", z)
+    z <- gsub("zebra", ">-0.001")
+    z <- as.data.frame(z)
+    z$param <- rownames(z)
+    z$param[grep("Inter", z$param)] <- "Intercept"
+    z$y <- yname
+    rownames(z) <- NULL
+    z <- z[,c(6, 5,1:4)]
+    
+    out <- z[,1:2]
+    out$estse <- paste(z[,3], "±", z[,4])
+    out$test <- z[,5]
+    out$pval <- z[,6]
+    return(out)
+}#prep.out
+
+out1 <- prep.out(list.spprich, "rich")
+out2 <- prep.out(list.pelepop, "pele")
+out3 <- prep.out(list.k6pop, "esg6")
+out4 <- prep.out(list.sihi, "sihi")
+out5 <- prep.out(list.k2pop, "esg2")
+out6 <- prep.out(list.tast, "tast")
+
+write.csv(out1, "model_coefs_rich.csv")
+write.csv(out2, "model_coefs_pele.csv")
+write.csv(out3, "model_coefs_esg6.csv")
+write.csv(out4, "model_coefs_sihi.csv")
+write.csv(out5, "model_coefs_esg2.csv")
+write.csv(out6, "model_coefs_tast.csv")
+
+
 #####################################################################
 
 # produce figures 
@@ -452,6 +435,143 @@ dev.off()
 
 # figure 4: 2 x 2 scatterplots
 ## 4a: pele vs. pip; tast vs. pip (right axis)
-## 4b: pele vs. imp; tast vs. imp (right axis)
-## 4c: pele vs. open
+## 4b: pele vs. dev; tast vs. dev (right axis)
+## 4c: pele vs. open or forest
 ## 4d: sihi vs. age
+
+# predictions
+n <- 100
+# pele vs. pip
+px1 <- seq(min(ex$pct_imp_perim), max(ex$pct_imp_perim), length=n)
+prx1 <- data.frame(pct_imp_perim=px1)
+pred <- predict(list.pelepop[[6]], newdata=prx1, se.fit=TRUE)
+prx1$lo <- qnorm(0.025, pred$fit, pred$se.fit)
+prx1$up <- qnorm(0.975, pred$fit, pred$se.fit)
+prx1$mm <- qnorm(0.5,   pred$fit, pred$se.fit)
+
+# tast vs. pip
+px2 <- px1
+prx2 <- data.frame(pct_imp_perim=px2)
+pred <- predict(list.tast[[6]], newdata=prx1, se.fit=TRUE, type="link")
+prx2$lo <- plogis(qnorm(0.025, pred$fit, pred$se.fit))
+prx2$up <- plogis(qnorm(0.975, pred$fit, pred$se.fit))
+prx2$mm <- plogis(qnorm(0.5,   pred$fit, pred$se.fit))
+
+# pele vs. dev
+px3 <- seq(min(ex$dev), max(ex$dev), length=n)
+prx3 <- data.frame(dev=px3)
+pred <- predict(list.pelepop[[10]], newdata=prx3, se.fit=TRUE)
+prx3$lo <- qnorm(0.025, pred$fit, pred$se.fit)
+prx3$up <- qnorm(0.975, pred$fit, pred$se.fit)
+prx3$mm <- qnorm(0.5,   pred$fit, pred$se.fit)
+
+# tast vs. dev
+px4 <- px3
+prx4 <- data.frame(dev=px4)
+pred <- predict(list.tast[[10]], newdata=prx4, se.fit=TRUE, type="link")
+prx4$lo <- plogis(qnorm(0.025, pred$fit, pred$se.fit))
+prx4$up <- plogis(qnorm(0.975, pred$fit, pred$se.fit))
+prx4$mm <- plogis(qnorm(0.5,   pred$fit, pred$se.fit))
+
+# pele vs. forest
+# pele vs. open
+# sihi vs. age
+px6 <- seq(min(ex$age), max(ex$age), length=n)
+prx6 <- data.frame(age=px6)
+pred <- predict(list.sihi[[4]], newdata=prx6, se.fit=TRUE, type="link")
+prx6$lo <- plogis(qnorm(0.025, pred$fit, pred$se.fit))
+prx6$up <- plogis(qnorm(0.975, pred$fit, pred$se.fit))
+prx6$mm <- plogis(qnorm(0.5,   pred$fit, pred$se.fit))
+
+
+cols <- c("olivedrab", "steelblue", "orchid3")
+names(cols) <- c("rural", "suburban", "urban")
+ex$color <- cols[ex$type]
+pchs <- c(16, 15, 17)
+names(pchs) <- names(cols)
+ex$pch <- pchs[ex$type]
+
+par(mfrow=c(1,1), mar=c(5.1, 5.1, 1.1, 1.1), bty="n",
+    lend=1, las=1, cex.axis=1.4, cex.lab=1.4)
+plot(ex$pct_imp_perim, dx$pele, pch=ex$pch, col=ex$color, cex=1.3,
+     xaxt="n", yaxt="n", ylim=c(0, 20),
+     xlab="Perimeter imperviousness (%)",
+     ylab=expression(italic("P. leucopus")~population~density~(italic(n)/ha)))
+xx <- prx1$pct_imp_perim
+uu <- prx1$up
+ll <- prx1$lo
+mm <- prx1$mm
+polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
+points(xx, mm, type="l", lwd=4)
+
+axis(side=1, at=0:5*10)
+axis(side=2, at=0:4*5)
+legend("topright", legend=c("Rural", "Suburban", "Urban"),
+       pch=pchs, col=cols, cex=1.3, bty="n")
+text(0, 21, "A", cex=3, font=2, adj=0, xpd=NA)
+
+
+
+plot(ex$pct_imp_perim, d06$y, pch=ex$pch, col=ex$color, cex=1.3,
+     ylim=c(0, 1), xlim=c(0, 50), xaxt="n", yaxt="n",
+     xlab="Perimeter imperviousness (%)",
+     ylab=expression("Prob."~of~italic("T. striatus")~detection))
+axis(side=1, at=0:5*10)
+axis(side=2, at=0:4*0.25, labels=c("0", NA, NA, NA, "1"))
+text(0, 1.1, "B", cex=3, font=2, adj=0, xpd=NA)
+xx <- prx2$pct_imp_perim
+uu <- prx2$up
+ll <- prx2$lo
+mm <- prx2$mm
+polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
+points(xx, mm, type="l", lwd=4)
+
+
+plot(ex$dev, dx$pele, pch=ex$pch, col=ex$color, cex=1.3,
+     xlim=c(0, 100), ylim=c(0, 20), xaxt="n", yaxt="n",
+     xlab="Developed cover (%)",
+     ylab=expression(italic("P. leucopus")~population~density~(italic(n)/ha)))
+axis(side=1, at=0:5*20)
+axis(side=2, at=0:4*5)
+text(0, 21, "C", cex=3, font=2, adj=0, xpd=NA)
+xx <- prx3$dev
+uu <- prx3$up
+ll <- prx3$lo
+mm <- prx3$mm
+polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
+points(xx, mm, type="l", lwd=4)
+
+
+plot(ex$dev, d06$y, pch=ex$pch, col=ex$color, cex=1.3,
+     ylim=c(0, 1), xlim=c(0, 100), xaxt="n", yaxt="n",
+     xlab="Perimeter imperviousness (%)",
+     ylab=expression("Prob."~of~italic("T. striatus")~detection))
+axis(side=1, at=0:5*20)
+axis(side=2, at=0:4*0.25, labels=c("0", NA, NA, NA, "1"))
+text(0, 1.1, "D", cex=3, font=2, adj=0, xpd=NA)
+xx <- prx4$dev
+uu <- prx4$up
+ll <- prx4$lo
+mm <- prx4$mm
+polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
+points(xx, mm, type="l", lwd=4)
+
+
+plot(ex$open, dx$pele, pch=ex$pch, col=ex$color, cex=1.3)
+plot(ex$forest, dx$pele, pch=ex$pch, col=ex$color, cex=1.3)
+
+
+plot(ex$age, d04$y, pch=ex$pch, col=ex$color, cex=1.3,
+     xlim=c(0, 90), ylim=c(0, 1), xaxt="n", yaxt="n",
+     xlab="Fragment age (y)",
+     ylab=expression("Prob."~of~italic("S. hispidus")~detection))
+axis(side=1, at=0:3*30)
+axis(side=2, at=0:4*0.25, labels=c("0", NA, NA, NA, "1"))
+text(0, 1.1, "F", cex=3, font=2, adj=0, xpd=NA)
+xx <- prx6$age
+uu <- prx6$up
+ll <- prx6$lo
+mm <- prx6$mm
+polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
+points(xx, mm, type="l", lwd=4)
+
