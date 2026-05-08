@@ -11,7 +11,6 @@ ex <- read.csv(in.name)
 # final response variable matrix - by species
 in.name <- "dat_response_species_2026-04-27.csv"
 dx <- read.csv(in.name)
-dx2 <- read.csv("dat_rodent_popden_site_2025-01-24.csv")
 dx2$rich <- apply(dx2[,-1], 1, function(x){length(which(x>0))})
 
 # final response variable matrix - by trait group
