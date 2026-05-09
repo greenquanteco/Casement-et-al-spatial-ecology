@@ -25,7 +25,6 @@ rownames(ex) <- ex$site
 # means dataframes in same row order by site!
 rownames(dx) == rownames(kx)
 rownames(ex) == rownames(kx)
-rownames(dx2) == rownames(dx)
 
 # delete site columns
 dx$site <- NULL
@@ -353,7 +352,7 @@ prep.out <- function(Q, yname){
     z <- formatC(z, format="f", digits=3)
     z <- gsub("-0.000", "zebra", z)
     z <- gsub("0.000", "<0.001", z)
-    z <- gsub("zebra", ">-0.001")
+    z <- gsub("zebra", ">-0.001", z)
     z <- as.data.frame(z)
     z$param <- rownames(z)
     z$param[grep("Inter", z$param)] <- "Intercept"
@@ -474,7 +473,21 @@ prx4$up <- plogis(qnorm(0.975, pred$fit, pred$se.fit))
 prx4$mm <- plogis(qnorm(0.5,   pred$fit, pred$se.fit))
 
 # pele vs. forest
+px5a <- seq(min(ex$forest), max(ex$forest), length=n)
+prx5a <- data.frame(forest=px5a)
+pred <- predict(list.pelepop[[9]], newdata=prx5a, se.fit=TRUE)
+prx5a$lo <- qnorm(0.025, pred$fit, pred$se.fit)
+prx5a$up <- qnorm(0.975, pred$fit, pred$se.fit)
+prx5a$mm <- qnorm(0.5,   pred$fit, pred$se.fit)
+
 # pele vs. open
+px5b <- seq(min(ex$open), max(ex$open), length=n)
+prx5b <- data.frame(open=px5b)
+pred <- predict(list.pelepop[[11]], newdata=prx5b, se.fit=TRUE)
+prx5b$lo <- qnorm(0.025, pred$fit, pred$se.fit)
+prx5b$up <- qnorm(0.975, pred$fit, pred$se.fit)
+prx5b$mm <- qnorm(0.5,   pred$fit, pred$se.fit)
+
 # sihi vs. age
 px6 <- seq(min(ex$age), max(ex$age), length=n)
 prx6 <- data.frame(age=px6)
@@ -491,7 +504,12 @@ pchs <- c(16, 15, 17)
 names(pchs) <- names(cols)
 ex$pch <- pchs[ex$type]
 
-par(mfrow=c(1,1), mar=c(5.1, 5.1, 1.1, 1.1), bty="n",
+ace.up <- 22
+bdf.up <- 1.1
+
+jpeg("figure_04.jpg", width=6.5, height=9, units="in",
+     res=500)
+par(mfrow=c(3,2), mar=c(5.1, 5.1, 2.1, 1.1), bty="n",
     lend=1, las=1, cex.axis=1.4, cex.lab=1.4)
 plot(ex$pct_imp_perim, dx$pele, pch=ex$pch, col=ex$color, cex=1.3,
      xaxt="n", yaxt="n", ylim=c(0, 20),
@@ -503,75 +521,107 @@ ll <- prx1$lo
 mm <- prx1$mm
 polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
 points(xx, mm, type="l", lwd=4)
-
 axis(side=1, at=0:5*10)
 axis(side=2, at=0:4*5)
 legend("topright", legend=c("Rural", "Suburban", "Urban"),
        pch=pchs, col=cols, cex=1.3, bty="n")
-text(0, 21, "A", cex=3, font=2, adj=0, xpd=NA)
+text(0, ace.up, "A", cex=3, font=2, adj=0, xpd=NA)
+points(ex$pct_imp_perim, dx$pele, pch=ex$pch, col=ex$color, cex=1.3)
 
-
+##############################################################################
 
 plot(ex$pct_imp_perim, d06$y, pch=ex$pch, col=ex$color, cex=1.3,
      ylim=c(0, 1), xlim=c(0, 50), xaxt="n", yaxt="n",
      xlab="Perimeter imperviousness (%)",
      ylab=expression("Prob."~of~italic("T. striatus")~detection))
 axis(side=1, at=0:5*10)
-axis(side=2, at=0:4*0.25, labels=c("0", NA, NA, NA, "1"))
-text(0, 1.1, "B", cex=3, font=2, adj=0, xpd=NA)
+axis(side=2, at=0:5*0.2)
+text(0, bdf.up, "B", cex=3, font=2, adj=0, xpd=NA)
 xx <- prx2$pct_imp_perim
 uu <- prx2$up
 ll <- prx2$lo
 mm <- prx2$mm
 polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
 points(xx, mm, type="l", lwd=4)
+points(ex$pct_imp_perim, d06$y, pch=ex$pch, col=ex$color, cex=1.3)
 
-
+###############################################################################
 plot(ex$dev, dx$pele, pch=ex$pch, col=ex$color, cex=1.3,
      xlim=c(0, 100), ylim=c(0, 20), xaxt="n", yaxt="n",
      xlab="Developed cover (%)",
      ylab=expression(italic("P. leucopus")~population~density~(italic(n)/ha)))
 axis(side=1, at=0:5*20)
 axis(side=2, at=0:4*5)
-text(0, 21, "C", cex=3, font=2, adj=0, xpd=NA)
+text(0, ace.up, "C", cex=3, font=2, adj=0, xpd=NA)
 xx <- prx3$dev
 uu <- prx3$up
 ll <- prx3$lo
 mm <- prx3$mm
 polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
 points(xx, mm, type="l", lwd=4)
+points(ex$dev, dx$pele, pch=ex$pch, col=ex$color, cex=1.3)
 
-
+###############################################################################
 plot(ex$dev, d06$y, pch=ex$pch, col=ex$color, cex=1.3,
      ylim=c(0, 1), xlim=c(0, 100), xaxt="n", yaxt="n",
-     xlab="Perimeter imperviousness (%)",
+     xlab="Developed cover (%)",
      ylab=expression("Prob."~of~italic("T. striatus")~detection))
 axis(side=1, at=0:5*20)
-axis(side=2, at=0:4*0.25, labels=c("0", NA, NA, NA, "1"))
-text(0, 1.1, "D", cex=3, font=2, adj=0, xpd=NA)
+axis(side=2, at=0:5*0.2)
+text(0, bdf.up, "D", cex=3, font=2, adj=0, xpd=NA)
 xx <- prx4$dev
 uu <- prx4$up
 ll <- prx4$lo
 mm <- prx4$mm
 polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
 points(xx, mm, type="l", lwd=4)
+points(ex$dev, d06$y, pch=ex$pch, col=ex$color, cex=1.3)
 
+###############################################################################
+plot(ex$forest, dx$pele, pch=ex$pch, col=ex$color, cex=1.3,
+     xlim=c(0, 70), ylim=c(0, 20), xaxt="n", yaxt="n",
+     xlab="Forest cover (%)",
+     ylab=expression(italic("P. leucopus")~population~density~(italic(n)/ha)))
+axis(side=1, at=0:7*10)
+axis(side=2, at=0:4*5)
+text(0, ace.up, "E", cex=3, font=2, adj=0, xpd=NA)
+xx <- prx5a$forest
+uu <- prx5a$up
+ll <- pmax(0, prx5a$lo)
+mm <- pmax(0, prx5a$mm)
+polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
+points(xx, mm, type="l", lwd=4)
+points(ex$forest, dx$pele, pch=ex$pch, col=ex$color, cex=1.3)
+###############################################################################
+# plot(ex$open, dx$pele, pch=ex$pch, col=ex$color, cex=1.3,
+#      xlim=c(0, 50), ylim=c(0, 20), xaxt="n", yaxt="n",
+#      xlab="Open cover (%)",
+#      ylab=expression(italic("P. leucopus")~population~density~(italic(n)/ha)))
+# axis(side=1, at=0:5*10)
+# axis(side=2, at=0:4*5)
+# text(0, 21, "E", cex=3, font=2, adj=0, xpd=NA)
+# xx <- prx5b$open
+# uu <- prx5b$up
+# ll <- pmax(0, prx5b$lo)
+# mm <- pmax(0, prx5b$mm)
+# polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
+# points(xx, mm, type="l", lwd=4)
+# points(ex$open, dx$pele, pch=ex$pch, col=ex$color, cex=1.3)
 
-plot(ex$open, dx$pele, pch=ex$pch, col=ex$color, cex=1.3)
-plot(ex$forest, dx$pele, pch=ex$pch, col=ex$color, cex=1.3)
-
-
+###############################################################################
 plot(ex$age, d04$y, pch=ex$pch, col=ex$color, cex=1.3,
      xlim=c(0, 90), ylim=c(0, 1), xaxt="n", yaxt="n",
      xlab="Fragment age (y)",
      ylab=expression("Prob."~of~italic("S. hispidus")~detection))
 axis(side=1, at=0:3*30)
-axis(side=2, at=0:4*0.25, labels=c("0", NA, NA, NA, "1"))
-text(0, 1.1, "F", cex=3, font=2, adj=0, xpd=NA)
+axis(side=2, at=0:5*0.2)
+text(0, bdf.up, "F", cex=3, font=2, adj=0, xpd=NA)
 xx <- prx6$age
 uu <- prx6$up
 ll <- prx6$lo
 mm <- prx6$mm
 polygon(x=c(xx, rev(xx)), y=c(ll, rev(uu)), border=NA, col="grey80")
 points(xx, mm, type="l", lwd=4)
-
+points(ex$age, d04$y, pch=ex$pch, col=ex$color, cex=1.3)
+###############################################################################
+dev.off()
