@@ -504,6 +504,4 @@ ag.nested
 #2   nonrural_within     105.00            0.27            0.10            0.50
 #3      rural_within      28.00            0.19            0.00            0.33
 
-
-
 # end script!
