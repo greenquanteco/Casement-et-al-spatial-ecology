@@ -13,7 +13,7 @@ plot(sites)
 dx <- read.csv("dat-expl-100.csv")
 
 # site mammal data
-dy <- read.csv("dat-mamm.csv")
+dy <- read.csv("dat-popden.csv")
 
 
 # do we have all the right site names?
@@ -117,12 +117,13 @@ lw <- nb2listw(nb, style="W")
 # now calculate and test Moran's I vs. null expectation
 # under spatial randomness. Use permutation test because
 # n is only 23
+dy$rich <- apply(dy, 1, function(x){sum(x > 0)})
+
 set.seed(123)
-moran.mc(dy$rich, lw, nsim=9999, alternative="greater")
 moran.mc(dy$rich, lw, nsim=9999, alternative="two.sided")
-moran.mc(dy$pele, lw, nsim=9999, alternative="two.sided")
-moran.mc(dy$sihi, lw, nsim=9999, alternative="two.sided")
-moran.mc(dy$tast, lw, nsim=9999, alternative="two.sided")
+moran.mc(log(dy$pele+1), lw, nsim=9999, alternative="two.sided")
+moran.mc(as.numeric(dy$sihi > 0), lw, nsim=9999, alternative="two.sided")
+moran.mc(as.numeric(dy$tast > 0), lw, nsim=9999, alternative="two.sided")
 
 # profile Moran's I across different non-overlapping distance
 # classes

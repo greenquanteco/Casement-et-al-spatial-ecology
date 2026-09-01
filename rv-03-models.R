@@ -6,7 +6,7 @@ library(lmtest)
 
 # get response variables
 
-dx <- read.csv("dat-mamm.csv")
+dx <- read.csv("dat-popden.csv")
 
 # get explanatory variables
 dy <- read.csv("dat-expl-100.csv")
@@ -55,17 +55,17 @@ apply(de[,-1], 2, var)
 apply(de[,-1], 2, function(x){length(unique(x))})
 
 # make a data frame for each response
+dx$rich <- apply(dx[,-1], 1, function(x){sum(x > 0)})
+
 dx.rich <- data.frame(y=dx$rich, de[,-1])
 dx.pele <- data.frame(y=dx$pele, de[,-1])
 dx.sihi <- data.frame(y=dx$sihi, de[,-1])
 dx.tast <- data.frame(y=dx$tast, de[,-1])
-dx.simp <- data.frame(y=dx$simp, de[,-1])
 
 rownames(dx.rich) <- de$site
 rownames(dx.pele) <- de$site
 rownames(dx.sihi) <- de$site
 rownames(dx.tast) <- de$site
-rownames(dx.simp) <- de$site
 
 dx.sihi$y <- ifelse(dx.sihi$y > 0, 1, 0)
 dx.tast$y <- ifelse(dx.tast$y > 0, 1, 0)
@@ -76,7 +76,7 @@ names(list.rich) <- c("null", names(dx.rich)[-1])
 list.pele <- list.rich
 list.sihi <- list.rich
 list.tast <- list.rich
-list.simp <- list.rich
+
 
 # RICHNESS models
 list.rich[[01]] <- glm(y~1,        data=dx.rich, family=poisson)
@@ -144,20 +144,21 @@ moran.rich <- t(apply(rich.res, 2, function(x) {
 
 moran.rich <- as.data.frame(moran.rich)
 moran.rich
-#                   I      p
-#null     -0.10154530 0.6371
-#areaha   -0.05622163 0.4800
-#age      -0.11827005 0.7016
-#perim    -0.09831333 0.6348
-#island   -0.09516099 0.6210
-#imp      -0.07732384 0.5492
-#forest   -0.08584304 0.5789
-#dev      -0.06213514 0.4964
-#tree     -0.09940847 0.6435
-#open     -0.10934176 0.6746
-#popden   -0.06074462 0.4925
-#povrate  -0.10220549 0.6492
-#humanmod -0.08576378 0.5843
+#                    I      p
+# null     -0.10154530 0.6371
+# areaha   -0.05622163 0.4800
+# shape    -0.07920240 0.5502
+# age      -0.11827005 0.7016
+# perim    -0.09831333 0.6348
+# island   -0.09516099 0.6210
+# imp      -0.07732384 0.5492
+# forest   -0.08584304 0.5789
+# dev      -0.06213514 0.4964
+# tree     -0.09940847 0.6435
+# open     -0.10934176 0.6746
+# popden   -0.06074462 0.4925
+# povrate  -0.10220549 0.6492
+# humanmod -0.08576378 0.5843
 
 # check Poisson dispersion and the 
 # Pearson goodness of fit p-value
@@ -236,20 +237,21 @@ aic.pele[,3:6] <- round(aic.pele[,3:6], 3)
 
 aic.pele
 #    mod     pred   aicc  delta    wt      ER
-# 5    5    perim 53.570  0.000 0.588   1.000
-# 9    9      dev 54.931  1.361 0.298   1.975
-# 11  11     open 59.052  5.482 0.038  15.502
-# 14  14 humanmod 60.564  6.994 0.018  33.012
-# 8    8   forest 60.850  7.280 0.015  38.097
-# 3    3    shape 61.803  8.233 0.010  61.331
-# 1    1     null 62.473  8.903 0.007  85.745
-# 7    7      imp 62.538  8.968 0.007  88.570
-# 12  12   popden 62.604  9.033 0.006  91.533
-# 4    4      age 63.335  9.764 0.004 131.927
-# 10  10     tree 64.434 10.864 0.003 228.605
-# 2    2   areaha 64.910 11.340 0.002 289.965
-# 13  13  povrate 64.929 11.359 0.002 292.802
-# 6    6   island 65.099 11.529 0.002 318.815
+# 5    5    perim 64.282  0.000 0.623   1.000
+# 9    9      dev 66.069  1.787 0.255   2.444
+# 11  11     open 69.513  5.231 0.046  13.675
+# 14  14 humanmod 71.409  7.127 0.018  35.290
+# 8    8   forest 71.750  7.468 0.015  41.849
+# 3    3    shape 72.680  8.398 0.009  66.623
+# 7    7      imp 73.173  8.891 0.007  85.250
+# 1    1     null 73.246  8.964 0.007  88.432
+# 12  12   popden 73.361  9.079 0.007  93.661
+# 4    4      age 73.765  9.483 0.005 114.608
+# 10  10     tree 75.118 10.836 0.003 225.425
+# 13  13  povrate 75.639 11.357 0.002 292.479
+# 2    2   areaha 75.753 11.471 0.002 309.684
+# 6    6   island 75.834 11.552 0.002 322.492
+
 
 # get residuals
 pele.res <- sapply(list.pele, residuals, type="pearson")
@@ -267,20 +269,20 @@ moran.pele <- as.data.frame(moran.pele)
 moran.pele <- moran.pele[aic.pele$pred,]
 moran.pele
 #               I     p
-# perim     0.045 0.218
+# perim     0.059 0.191
 # dev       0.052 0.198
-# open     -0.054 0.475
-# humanmod  0.070 0.166
-# forest    0.227 0.032
-# shape     0.086 0.138
-# null      0.207 0.040
-# imp       0.104 0.124
-# popden    0.087 0.138
-# age       0.122 0.104
-# tree      0.187 0.050
-# areaha    0.211 0.038
-# povrate   0.178 0.056
-# island    0.226 0.030
+# open     -0.073 0.546
+# humanmod  0.069 0.166
+# forest    0.234 0.028
+# shape     0.081 0.143
+# imp       0.100 0.128
+# null      0.204 0.039
+# popden    0.086 0.138
+# age       0.108 0.120
+# tree      0.181 0.053
+# povrate   0.170 0.058
+# areaha    0.206 0.038
+# island    0.231 0.026
 
 par(mfrow = c(2, 2))
 plot(list.pele[["dev"]])
@@ -291,17 +293,18 @@ summary(list.pele$dev)
 summary(list.pele$perim)
 
 
+bptest(list.pele[["perim"]])
+# 
+# studentized Breusch-Pagan test
+# 
+# data:  list.pele[["perim"]]
+# BP = 2.9944, df = 1, p-value = 0.08355
+
 bptest(list.pele[["dev"]])
 # studentized Breusch-Pagan test
 # 
 # data:  list.pele[["dev"]]
-# BP = 1.2515, df = 1, p-value = 0.2633
-
-bptest(list.pele[["perim"]])
-# studentized Breusch-Pagan test
-# 
-# data:  list.pele[["perim"]]
-# BP = 0.53195, df = 1, p-value = 0.4658
+# BP = 0.090189, df = 1, p-value = 0.7639
 
 par(mfrow=c(1,2))
 plot(dx.pele$perim, dx.pele$y)
@@ -496,115 +499,8 @@ summary(list.tast$open)$coefficients
 
 ##############################################################################
 
-# try simpson, use LM on raw values
-
-list.simp[[01]] <- lm(y~1,        data=dx.simp)
-list.simp[[02]] <- lm(y~areaha,   data=dx.simp)
-list.simp[[03]] <- lm(y~shape,    data=dx.simp)
-list.simp[[04]] <- lm(y~age,      data=dx.simp)
-list.simp[[05]] <- lm(y~perim,    data=dx.simp)
-list.simp[[06]] <- lm(y~island,   data=dx.simp)
-list.simp[[07]] <- lm(y~imp,      data=dx.simp)
-list.simp[[08]] <- lm(y~forest,   data=dx.simp)
-list.simp[[09]] <- lm(y~dev,      data=dx.simp)
-list.simp[[10]] <- lm(y~tree,     data=dx.simp)
-list.simp[[11]] <- lm(y~open,     data=dx.simp)
-list.simp[[12]] <- lm(y~popden,   data=dx.simp)
-list.simp[[13]] <- lm(y~povrate,  data=dx.simp)
-list.simp[[14]] <- lm(y~humanmod, data=dx.simp)
-
-aic.simp <- data.frame(mod=1:length(list.simp))
-aic.simp$pred <- names(list.simp)
-aic.simp$aicc <- sapply(list.simp, MuMIn::AICc)
-
-aic.simp$delta <- aic.simp$aicc - min(aic.simp$aicc)
-aic.simp$wt <- exp(-0.5*aic.simp$delta)
-aic.simp$wt <- aic.simp$wt/sum(aic.simp$wt)
-
-# order by descending AIC weight
-aic.simp <- aic.simp[order(-aic.simp$wt),]
-
-# calculate evidence ratio
-aic.simp$ER <- max(aic.simp$wt) / aic.simp$wt
-
-# round
-aic.simp[,3:6] <- round(aic.simp[,3:6], 3)
-
-aic.simp
-#    mod     pred  aicc delta    wt    ER
-# 3    3    shape 1.869 0.000 0.208 1.000
-# 1    1     null 2.531 0.661 0.149 1.392
-# 2    2   areaha 3.615 1.745 0.087 2.393
-# 11  11     open 3.856 1.986 0.077 2.700
-# 4    4      age 4.159 2.290 0.066 3.142
-# 12  12   popden 4.473 2.603 0.056 3.675
-# 7    7      imp 4.546 2.676 0.054 3.812
-# 6    6   island 4.668 2.799 0.051 4.052
-# 9    9      dev 4.833 2.963 0.047 4.400
-# 8    8   forest 4.969 3.100 0.044 4.712
-# 14  14 humanmod 5.098 3.228 0.041 5.023
-# 5    5    perim 5.160 3.290 0.040 5.182
-# 10  10     tree 5.191 3.321 0.039 5.263
-# 13  13  povrate 5.194 3.324 0.039 5.270
-
-plot(dx.simp$shape, dx.simp$y)
-
-
-# get residuals
-simp.res <- sapply(list.simp, residuals, type="pearson")
-
-# run permutation-based Moran's I across models
-set.seed(123)
-moran.simp <- t(apply(simp.res, 2, function(x) {
-    z <- moran.mc(x, listw = w, nsim = 9999)
-    
-    c(I = unname(z$statistic),
-      p = z$p.value)
-}))
-moran.simp <- round(moran.simp, 3)
-moran.simp <- as.data.frame(moran.simp)
-moran.simp <- moran.simp[aic.simp$pred,]
-moran.simp
-#               I     p
-# shape    -0.223 0.958
-# null     -0.130 0.726
-# areaha   -0.147 0.791
-# open     -0.212 0.944
-# age      -0.171 0.858
-# popden   -0.093 0.612
-# imp      -0.075 0.539
-# island   -0.122 0.705
-# dev      -0.101 0.634
-# forest   -0.130 0.731
-# humanmod -0.117 0.682
-# perim    -0.125 0.713
-# tree     -0.129 0.736
-# povrate  -0.130 0.731
-
-par(mfrow = c(2, 2))
-plot(list.simp[["dev"]])
-plot(list.simp[["perim"]])
-
-summary(list.simp$dev)
-
-summary(list.simp$perim)
-
-
-bptest(list.simp[["dev"]])
-# studentized Breusch-Pagan test
-# 
-# data:  list.pele[["dev"]]
-# BP = 1.2515, df = 1, p-value = 0.2633
-
-bptest(list.simp[["perim"]])
-# studentized Breusch-Pagan test
-# 
-# data:  list.pele[["perim"]]
-# BP = 0.53195, df = 1, p-value = 0.4658
-
 
 ##############################################################################
-
 
 # make some figures
 # rich: none
@@ -808,7 +704,7 @@ par(mfrow=c(3,2), mar=c(5.1, 6.1, 1.1, 1.1),
     cex.axis=2.1, cex.lab=2.1,
     xpd=NA)
 plot(de$perim, dx.pele$y,
-     xlim=c(0, 50), ylim=c(0, 20),
+     xlim=c(0, 50), ylim=c(0, 40),
      xlab="Site perimeter imperviousness (%)",
      ylab="")
 title(main="A", adj=0, font.main=2, cex.main=2)
@@ -816,11 +712,11 @@ polygon(x=c(px1, rev(px1)), y=c(prx1$lo, rev(prx1$up)),
         border=NA, col=poly.col)
 points(px1, prx1$mn, type="l", lwd=3)
 points(de$perim, dx.pele$y, pch=use.pch, cex=pcex)
-add.silhouette(pele.img, x=5, y=20, width=0.3, adj=c(0,1))
+add.silhouette(pele.img, x=5, y=40, width=0.3, adj=c(0,1))
 title(ylab=expression(italic("P. leucopus")~pop.~density~(n/ha)), line=yline)
 
 plot(de$dev, dx.pele$y,
-     xlim=c(0, 100), ylim=c(0, 20),
+     xlim=c(0, 100), ylim=c(0, 40),
      xlab="Developed cover (%)",
      ylab="")
 title(main="B", adj=0, font.main=2, cex.main=2)
@@ -828,7 +724,7 @@ polygon(x=c(px2, rev(px2)), y=c(prx2$lo, rev(prx2$up)),
         border=NA, col=poly.col)
 points(px2, prx2$mn, type="l", lwd=3)
 points(de$dev, dx.pele$y, pch=use.pch, cex=pcex)
-add.silhouette(pele.img, x=0, y=20, width=0.3, adj=c(0,1))
+add.silhouette(pele.img, x=0, y=40, width=0.3, adj=c(0,1))
 title(ylab=expression(italic("P. leucopus")~pop.~density~(n/ha)), line=yline)
 
 plot(de$age, jitter(dx.sihi$y, amount=0.02),
