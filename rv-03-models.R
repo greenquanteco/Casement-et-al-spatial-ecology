@@ -252,6 +252,30 @@ aic.pele
 # 2    2   areaha 75.753 11.471 0.002 309.684
 # 6    6   island 75.834 11.552 0.002 322.492
 
+# aic.pele at hypothesis level
+hyp.weights <- function(aic.tab) {
+    
+    H1 <- c("areaha", "shape", "age", "perim", "island")
+    H2 <- c("imp", "forest", "dev", "tree", "open")
+    H3 <- c("popden", "povrate", "humanmod")
+    
+    hyp <- rep(NA_character_, nrow(aic.tab))
+    hyp[aic.tab$pred %in% H1] <- "H1"
+    hyp[aic.tab$pred %in% H2] <- "H2"
+    hyp[aic.tab$pred %in% H3] <- "H3"
+    
+    rel.like <- exp(-0.5 * aic.tab$delta)
+    
+    hyp.like <- tapply(rel.like, hyp, mean)
+    
+    hyp.like / sum(hyp.like)
+}
+hyp.weights(aic.pele)
+#        H1         H2         H3 
+#0.63458565 0.32184137 0.04357298 
+
+
+
 
 # get residuals
 pele.res <- sapply(list.pele, residuals, type="pearson")
