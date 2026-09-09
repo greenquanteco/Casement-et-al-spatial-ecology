@@ -107,23 +107,25 @@ aic.rich <- aic.rich[order(-aic.rich$wt),]
 
 # calculate evidence ratio
 aic.rich$ER <- max(aic.rich$wt) / aic.rich$wt
+# round
+aic.rich[,3:ncol(aic.rich)] <- round(aic.rich[,3:ncol(aic.rich)], 3)
 
 aic.rich
-#    mod     pred     aicc    delta         wt       ER
-# 1    1     null 85.88121 0.000000 0.15826404 1.000000
-# 5    5    perim 87.05608 1.174868 0.08795546 1.799366
-# 2    2   areaha 87.14798 1.266770 0.08400530 1.883977
-# 3    3    shape 87.28309 1.401881 0.07851770 2.015648
-# 9    9      dev 87.39578 1.514572 0.07421594 2.132481
-# 12  12   popden 87.40780 1.526588 0.07377136 2.145332
-# 8    8   forest 87.53137 1.650162 0.06935121 2.282066
-# 6    6   island 87.82717 1.945957 0.05981677 2.645814
-# 4    4      age 87.90561 2.024399 0.05751612 2.751647
-# 11  11     open 88.04983 2.168620 0.05351462 2.957398
-# 7    7      imp 88.06457 2.183358 0.05312171 2.979272
-# 14  14 humanmod 88.06601 2.184797 0.05308351 2.981416
-# 13  13  povrate 88.23971 2.358502 0.04866762 3.251937
-# 10  10     tree 88.25908 2.377868 0.04819865 3.283578
+#    mod     pred   aicc delta    wt    ER
+# 1    1     null 85.881 0.000 0.158 1.000
+# 5    5    perim 87.056 1.175 0.088 1.799
+# 2    2   areaha 87.148 1.267 0.084 1.884
+# 3    3    shape 87.283 1.402 0.079 2.016
+# 9    9      dev 87.396 1.515 0.074 2.132
+# 12  12   popden 87.408 1.527 0.074 2.145
+# 8    8   forest 87.531 1.650 0.069 2.282
+# 6    6   island 87.827 1.946 0.060 2.646
+# 4    4      age 87.906 2.024 0.058 2.752
+# 11  11     open 88.050 2.169 0.054 2.957
+# 7    7      imp 88.065 2.183 0.053 2.979
+# 14  14 humanmod 88.066 2.185 0.053 2.981
+# 13  13  povrate 88.240 2.359 0.049 3.252
+# 10  10     tree 88.259 2.378 0.048 3.284
 
 
 # get residuals
@@ -142,23 +144,23 @@ moran.rich <- t(apply(rich.res, 2, function(x) {
       p = z$p.value)
 }))
 
-moran.rich <- as.data.frame(moran.rich)
+moran.rich <- as.data.frame(round(moran.rich, 3))
 moran.rich
-#                    I      p
-# null     -0.10154530 0.6371
-# areaha   -0.05622163 0.4800
-# shape    -0.07920240 0.5502
-# age      -0.11827005 0.7016
-# perim    -0.09831333 0.6348
-# island   -0.09516099 0.6210
-# imp      -0.07732384 0.5492
-# forest   -0.08584304 0.5789
-# dev      -0.06213514 0.4964
-# tree     -0.09940847 0.6435
-# open     -0.10934176 0.6746
-# popden   -0.06074462 0.4925
-# povrate  -0.10220549 0.6492
-# humanmod -0.08576378 0.5843
+#               I     p
+# null     -0.102 0.637
+# areaha   -0.056 0.480
+# shape    -0.079 0.550
+# age      -0.118 0.702
+# perim    -0.098 0.635
+# island   -0.095 0.621
+# imp      -0.077 0.549
+# forest   -0.086 0.579
+# dev      -0.062 0.496
+# tree     -0.099 0.643
+# open     -0.109 0.675
+# popden   -0.061 0.492
+# povrate  -0.102 0.649
+# humanmod -0.086 0.584
 
 # check Poisson dispersion and the 
 # Pearson goodness of fit p-value
@@ -270,15 +272,16 @@ hyp.weights <- function(aic.tab) {
     
     hyp.like / sum(hyp.like)
 }
-hyp.weights(aic.pele)
+hyp.pele <- hyp.weights(aic.pele)
+hyp.pele
 #        H1         H2         H3 
 #0.63458565 0.32184137 0.04357298 
-
-
+max(hyp.pele) / hyp.pele
 
 
 # get residuals
 pele.res <- sapply(list.pele, residuals, type="pearson")
+
 
 # run permutation-based Moran's I across models
 set.seed(123)
@@ -385,6 +388,14 @@ aic.sihi
 # 2    2   areaha 34.036 11.922 0.002 388.036
 # 8    8   forest 34.318 12.203 0.002 446.601
 
+# hypothesis level weights
+hyp.sihi <- hyp.weights(aic.sihi)
+hyp.sihi
+#        H1         H2         H3 
+#0.82237145 0.14672071 0.03090785 
+max(hyp.sihi) / hyp.sihi
+
+
 
 # get residuals
 sihi.res <- sapply(list.sihi, residuals, type="pearson")
@@ -422,6 +433,12 @@ moran.sihi
 summary(list.sihi$age)$coefficients
 
 summary(list.sihi$open)$coefficients
+
+
+
+
+
+
 
 ##############################################################################
 
@@ -483,6 +500,13 @@ plot(dx.tast$open, jitter(dx.tast$y))
 coef(summary(list.tast$open))
 range(fitted(list.tast$open))
 
+# hypothesis level weights
+hyp.tast <- hyp.weights(aic.tast)
+hyp.tast
+#        H1         H2         H3 
+# 0.1461311 0.5578142 0.2960547
+max(hyp.tast) / hyp.tast
+
 # get residuals
 tast.res <- sapply(list.tast, residuals, type="pearson")
 
@@ -520,6 +544,19 @@ summary(list.tast$dev)$coefficients
 summary(list.tast$perim)$coefficients
 summary(list.tast$humanmod)$coefficients
 summary(list.tast$open)$coefficients
+
+##############################################################################
+
+# hypothesis support table (Table 3?)
+hyp.table <- data.frame(
+    hyp=1:3,
+    pele=round(hyp.pele, 3), 
+    sihi=round(hyp.sihi, 3), 
+    tast=round(hyp.tast, 3)
+)
+hyp.table
+
+
 
 ##############################################################################
 
