@@ -2,7 +2,6 @@
 
 library(MuMIn)
 library(spdep)
-library(lmtest)
 
 # get response variables
 
@@ -559,6 +558,33 @@ hyp.table
 
 
 ##############################################################################
+
+# parameter tables
+sum.list <- list(
+  list.pele$perim,
+  list.pele$dev,
+  list.sihi$age,
+  list.sihi$open,
+  list.tast$dev,
+  list.tast$perim)
+
+lapply(sum.list, function(x){summary(x)$coefficients})
+
+lapply(sum.list, emmeans)
+
+coef.tables <- lapply(sum.list, function(m) {
+    ci <- round(confint(m),3)
+    
+    data.frame(
+        Parameter = names(coef(m)),
+        Estimate = coef(m),
+        Lower95 = ci[, 1],
+        Upper95 = ci[, 2],
+        row.names = NULL
+    )
+})
+do.call(rbind, coef.tables)
+
 
 
 ##############################################################################
