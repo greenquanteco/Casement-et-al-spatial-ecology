@@ -319,18 +319,6 @@ summary(list.pele$dev)
 summary(list.pele$perim)
 
 
-bptest(list.pele[["perim"]])
-# 
-# studentized Breusch-Pagan test
-# 
-# data:  list.pele[["perim"]]
-# BP = 2.9944, df = 1, p-value = 0.08355
-
-bptest(list.pele[["dev"]])
-# studentized Breusch-Pagan test
-# 
-# data:  list.pele[["dev"]]
-# BP = 0.090189, df = 1, p-value = 0.7639
 
 par(mfrow=c(1,2))
 plot(dx.pele$perim, dx.pele$y)
@@ -570,7 +558,6 @@ sum.list <- list(
 
 lapply(sum.list, function(x){summary(x)$coefficients})
 
-lapply(sum.list, emmeans)
 
 coef.tables <- lapply(sum.list, function(m) {
     ci <- round(confint(m),3)
@@ -609,7 +596,7 @@ n <- ncol(rmat)
 
 vars <- colnames(rmat)
 vars2 <- c(
-    "Area", "Shape", "Age", "%Imp.\nperim.",
+    "Area", "Shape", "Age", "Perim.\nImperv.",
     "Isol.", "Imperv.\ncover",
     "Forest\ncover","Dev.\ncover",
     "Tree\ncover","Open","Pop.\nDens.",
@@ -650,7 +637,7 @@ segments(1.5, 0.3, 5.5, 4.3, lwd=2)
 segments(6.5, 5.3, 10.5, 9.3, lwd=2)
 segments(11.5, 10.3, 13.5, 12.3, lwd=2)
 SRT <- -36
-text(4.2, 1.6, "Island\nbiogeography-like\npredictors",
+text(3.9, 1.75, "Colonization\nand extinction",
      cex=1.5, srt=SRT)
 text(8.8, 7, "Land cover", cex=1.6, srt=SRT)
 text(12.8, 10.7, "Socioeconomic\nfactors", 
