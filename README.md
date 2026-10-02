@@ -16,27 +16,17 @@ There are 3 data files used to run the analyses. Inputs for the script are in th
 Contains species population densities at each site. Variables:
 
 -   `mipi`: detection (1) or nondetection (0) of Pine Vole (*Microtus pinetorum*).
-
 -   `mumu`: detection (1) or nondetection (0) of House Mouse (*Mus musculus*).
-
 -   `pego`: detection (1) or nondetection (0) of Cotton Mouse (*Peromyscus gossypinus*).
-
 -   `pele`: population density of White-footed Mouse (*Peromyscus leucopus*).
-
 -   `rano`: detection (1) or nondetection (0) of Brown Rat (*Rattus norvegicus*).
-
 -   `rehu`: detection (1) or nondetection (0) of Eastern Harvest Mouse (*Reithrodontomys humilis*).
-
 -   `sihi`: detection (1) or nondetection (0) of Hispid Cotton Rat (*Sigmodon hispidus*).
 
 -   `tast`: detection (1) or nondetection (0) of Eastern Chipmunk (*Tamias striatus*).
-
 -   `blca`: detection (1) or nondetection (0) of Southern Short-Tailed Shrew (*Blarina Brevicauda*).
-
 -   `glvo`: detection (1) or nondetection (0) of Southern Flying Squirrel (*Glaucomys volans*).
-
 -   `ocnu`: detection (1) or nondetection (0) of Golden Mouse (*Ochrotomys nuttalli*).
-
 -   `scca`: detection (1) or nondetection (0) of Eastern Gray Squirrel (*Sciurus carolinensis*).
 
 ### dat-explanatory.csv
@@ -44,29 +34,17 @@ Contains species population densities at each site. Variables:
 Contains explanatory variables derived from on-site measurements and GIS.
 
 -   `areaha`: area of site in ha
-
 -   `shape`: shape complexity of site, calculated as $0.25P/\sqrt(A)$, where P is site perimeter and A is site area, given that P and $\sqrt(A)$ have the same units.
-
 -   `age`: Years since site was last connected to nearby site with similar habitat.
-
 -   `perim`: percentage of the site perimeter that is impervious surface.
-
 -   `island`: distance to nearest patch of similar habitat, in m.
-
 -   `imp`: percentage of land in 100 m buffer surrounding site covered by impervious surface.
-
--   `forest`: mean percentage forest of each 30 m pixel in the the 100 m buffer surrounding each site.
-
+-   `forest`: mean percentage forest of each 30 m pixel in the 100 m buffer surrounding each site.
 -   `dev`: mean percentage developed land cover of each 30 m pixel in the 100 m buffer surrounding each site.
-
 -   `tree`: percentage of land surrounding site (within 100 m) covered by tree cover of any type (not used; slightly different than forest (below)).
-
 -   `open`: mean percentage of open land cover of each 30 m pixel in the 100 m buffer surrounding each site
-
 -   `popden`: human population density, in people / ha, in the 100 m buffer surrounding each site.
-
 -   `povrate`: percentage of households in the 100 m buffer surrounding each site with incomes below the federal poverty line.
-
 -   `human`: Human Modification Index wtihin a 100 m buffer surrounding each site. Ranges from 0 (no human modofication of landscape) to 1 (maximal modification).
 
 ### weights_15.7km.rds
@@ -83,15 +61,13 @@ Figure 3 utilizes 3 silhouettes downloaded from [PhyloPic](https://www.phylopic.
 
 ## Scripts
 
-There is 1 script that runs all analyses. The script is stored in the project root. Users should open this R script directly in RStudio so that the directory structure in the code is preserved.
+There is 1 script, `analysis-release.r`, that runs all analyses. The script is stored in the project root. Users should open this R script directly in RStudio so that the directory structure in the code is preserved.
 
-1.  `analysis-release.r`
-
-# Software notes
+## Software notes
 
 All analyses were performed using R version 4.5.1. This analysis used packages `vegan` version 2.6-10, `betapart` version 1.6.1, `png` version 0.1-9, `spdep` version 1.4-1, and `MuMIn` version 1.48.11.
 
-# Outputs
+## Outputs
 
 - Figure 2: Correlations between explanatory variable, grouped by hypotheses 1, 2, and 3.
 - Figure 3: Small mammal population density and detections vs. the best supported spatial predictor variables.
