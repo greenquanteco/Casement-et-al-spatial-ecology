@@ -586,13 +586,14 @@ use.pch <- 16
 # point size for figure 3
 pcex <- 1.2
 
+
 jpeg("figures/figure-03-revision.jpg",
-     width=9.4, height=10.8,
+     width=7.3, height=8.4,
      units="in", res=800)
 par(mfrow=c(3,2), mar=c(5.1, 6.1, 1.1, 1.1), 
     bty="n", lend=1, las=1,
     oma=c(0, 1, 2, 0),
-    cex.axis=2.1, cex.lab=2.1,
+    cex.axis=1.7, cex.lab=1.7,
     xpd=NA)
 # panel A: pele pop den vs. perimeter imperviousness
 plot(dx$perim, dx.pele$y,
@@ -687,6 +688,7 @@ add.silhouette(tamias.img, x=30, y=0.95,
 title(ylab=expression(italic("T. striatus")~detection~probability),
       line=yline)
 dev.off()
+
 
 
 ###########################################################
