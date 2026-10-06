@@ -18,7 +18,7 @@ Contains species population densities at each site. Variables:
 -   `mipi`: detection (1) or nondetection (0) of Pine Vole (*Microtus pinetorum*).
 -   `mumu`: detection (1) or nondetection (0) of House Mouse (*Mus musculus*).
 -   `pego`: detection (1) or nondetection (0) of Cotton Mouse (*Peromyscus gossypinus*).
--   `pele`: population density of White-footed Mouse (*Peromyscus leucopus*).
+-   `pele`: population density of White-footed Mouse (*Peromyscus leucopus*) in individuals/ha.
 -   `rano`: detection (1) or nondetection (0) of Brown Rat (*Rattus norvegicus*).
 -   `rehu`: detection (1) or nondetection (0) of Eastern Harvest Mouse (*Reithrodontomys humilis*).
 -   `sihi`: detection (1) or nondetection (0) of Hispid Cotton Rat (*Sigmodon hispidus*).
@@ -45,7 +45,7 @@ Contains explanatory variables derived from on-site measurements and GIS.
 -   `open`: mean percentage of open land cover of each 30 m pixel in the 100 m buffer surrounding each site
 -   `popden`: human population density, in people / ha, in the 100 m buffer surrounding each site.
 -   `povrate`: percentage of households in the 100 m buffer surrounding each site with incomes below the federal poverty line.
--   `human`: Human Modification Index wtihin a 100 m buffer surrounding each site. Ranges from 0 (no human modofication of landscape) to 1 (maximal modification).
+-   `human`: Human Modification Index wtihin a 100 m buffer surrounding each site. Ranges from 0 (no human modification of landscape) to 1 (maximal modification).
 
 ### weights_15.7km.rds
 
