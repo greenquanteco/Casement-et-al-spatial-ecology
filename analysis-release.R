@@ -474,7 +474,7 @@ px2 <- seq(min(dx$dev, na.rm=TRUE), max(dx$dev, na.rm=TRUE), length=n)
 px3 <- seq(min(dx$age, na.rm=TRUE), max(dx$age, na.rm=TRUE), length=n)
 px4 <- seq(min(dx$open, na.rm=TRUE), max(dx$open, na.rm=TRUE), length=n)
 px5 <- px2
-px6 <- seq(min(dx$human, na.rm=TRUE), max(dx$human, na.rm=TRUE), length=n)
+px6 <- px1
 
 # put in data frames
 prx1 <- data.frame(perim=px1)
@@ -482,7 +482,7 @@ prx2 <- data.frame(dev=px2)
 prx3 <- data.frame(age=px3)
 prx4 <- data.frame(open=px4)
 prx5 <- data.frame(dev=px5)
-prx6 <- data.frame(human=px6)
+prx6 <- data.frame(perim=px6)
 
 # calculate predictions
 pred1 <- predict(list.pele$perim,    newdata=prx1,
@@ -495,7 +495,7 @@ pred4 <- predict(list.sihi$open,     newdata=prx4,
                  se.fit=TRUE, type="link")
 pred5 <- predict(list.tast$dev,      newdata=prx5,
                  se.fit=TRUE, type="link")
-pred6 <- predict(list.tast$human, newdata=prx6,
+pred6 <- predict(list.tast$perim, newdata=prx6,
                  se.fit=TRUE, type="link")
 
 # backtransform from link to data scale
@@ -597,7 +597,7 @@ par(mfrow=c(3,2), mar=c(5.1, 6.1, 1.1, 1.1),
 # panel A: pele pop den vs. perimeter imperviousness
 plot(dx$perim, dx.pele$y,
      xlim=c(0, 50), ylim=c(0, 40),
-     xlab="Site perimeter imperviousness (%)",
+     xlab="Perimeter imperviousness (%)",
      ylab="")
 title(main="A", adj=0, font.main=2, cex.main=2)
 polygon(x=c(px1, rev(px1)), y=c(prx1$lo, rev(prx1$up)),
@@ -669,10 +669,10 @@ points(dx$dev, jitter(dx.tast$y, amount=0.02),
 add.silhouette(tamias.img, x=0, y=1, width=0.25, adj=c(0,1))
 title(ylab=expression(italic("T. striatus")~detection~probability),
       line=yline)
-# panel F: tast detection vs. hmi
-plot(dx$human, dx.tast$y, type="n",
-     xlim=c(0, 1), 
-     xlab="Human modification index (unitless)",
+# panel F: tast detection vs. perim
+plot(dx$perim, dx.tast$y, type="n",
+     xlim=c(0, 50), 
+     xlab="Perimeter imperviousness (%)",
      ylab="")
 title(main="F", adj=0, font.main=2, cex.main=2)
 polygon(x=c(px6, rev(px6)), y=c(prx6$lo, rev(prx6$up)),
@@ -680,9 +680,9 @@ polygon(x=c(px6, rev(px6)), y=c(prx6$lo, rev(prx6$up)),
 points(px6, prx6$mn, type="l", lwd=3)
 ## set random number seed for jitter
 set.seed(123)
-points(dx$human, jitter(dx.tast$y, amount=0.02),
+points(dx$perim, jitter(dx.tast$y, amount=0.02),
        pch=use.pch, cex=pcex)
-add.silhouette(tamias.img, x=0, y=1,
+add.silhouette(tamias.img, x=30, y=0.95,
                width=0.25, adj=c(0,1))
 title(ylab=expression(italic("T. striatus")~detection~probability),
       line=yline)
