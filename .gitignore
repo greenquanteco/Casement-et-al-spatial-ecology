@@ -1,10 +1,10 @@
-.Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 
 # RStudio project files
 .Rproj.user/
+*.Rproj
 
 # OS junk
 .DS_Store
