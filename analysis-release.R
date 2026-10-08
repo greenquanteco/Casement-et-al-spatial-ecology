@@ -127,6 +127,50 @@ text(12.8, 10.7, "Socioeconomic\nfactors",
      cex=1.5, srt=SRT)
 dev.off()
 
+# TIFF version
+tiff("figures/figure-02-revision.tif",
+     width=9, height=6.5,
+     units="in", res=800)
+par(mar=c(0.1, 0.1, 0.1, 0.1), lend=1,
+    las=1, bty="n")
+plot(NA, xlim=c(0.5, n+0.5),
+     ylim=c(n+0.5, 0.5),
+     xaxt="n", yaxt="n",
+     bty="n", asp=(6.5/9),
+     xlab="", ylab="")
+for(i in 1:n){
+    for(j in 1:n){
+        if(i > j){
+            rr <- rmat[i,j]
+            text(j, i,
+                 sprintf("%.2f", rr),
+                 cex = 0.35 + 1.6 * abs(rr),
+                 col=ifelse(rr > 0.3, "blue",
+                            ifelse(rr < -0.3, "red", "grey70")))
+        }#if
+    }#j
+}#i
+xleft <- 0.5+(0):(n-1)
+xright <- 1:n + 0.5
+ybottom <- xleft
+ytop <- xright
+rect(xleft, ybottom, xright, ytop, lwd=2,
+     col="grey65")
+text(1:n, 1:n, vars2, font=3)
+segments(xleft, ytop, xleft, n+0.5, col="grey70")
+segments(0.5, seq(2.5, n+0.5, by=1),
+         1:12+0.5, seq(2.5, n+0.5, by=1), col="grey70")
+segments(1.5, 0.3, 5.5, 4.3, lwd=2)
+segments(6.5, 5.3, 10.5, 9.3, lwd=2)
+segments(11.5, 10.3, 13.5, 12.3, lwd=2)
+SRT <- -36
+text(3.9, 1.75, "Colonization\nand extinction",
+     cex=1.5, srt=SRT)
+text(8.8, 7, "Land cover", cex=1.6, srt=SRT)
+text(12.8, 10.7, "Socioeconomic\nfactors", 
+     cex=1.5, srt=SRT)
+dev.off()
+
 ###########################################################
 #                                                         #
 # analysis 1: Species richness                            #
@@ -689,6 +733,108 @@ title(ylab=expression(italic("T. striatus")~detection~probability),
       line=yline)
 dev.off()
 
+# TIFF version for revisions
+tiff("figures/figure-03-revision.tif",
+     width=7.3, height=8.4,
+     units="in", res=800)
+par(mfrow=c(3,2), mar=c(5.1, 6.1, 1.1, 1.1), 
+    bty="n", lend=1, las=1,
+    oma=c(0, 1, 2, 0),
+    cex.axis=1.7, cex.lab=1.7,
+    xpd=NA)
+# panel A: pele pop den vs. perimeter imperviousness
+plot(dx$perim, dx.pele$y,
+     xlim=c(0, 50), ylim=c(0, 40),
+     xlab="Perimeter imperviousness (%)",
+     ylab="")
+title(main="A", adj=0, font.main=2, cex.main=2)
+polygon(x=c(px1, rev(px1)), y=c(prx1$lo, rev(prx1$up)),
+        border=NA, col=poly.col)
+points(px1, prx1$mn, type="l", lwd=3)
+points(dx$perim, dx.pele$y, pch=use.pch, cex=pcex)
+add.silhouette(pele.img, x=5, y=40, width=0.3, adj=c(0,1))
+title(ylab=expression(italic("P. leucopus")~pop.~density~(n/ha)),
+      line=yline)
+# panel B: pele pop den vs. developed land cover
+plot(dx$dev, dx.pele$y,
+     xlim=c(0, 100), ylim=c(0, 40),
+     xlab="Developed cover (%)",
+     ylab="")
+title(main="B", adj=0, font.main=2, cex.main=2)
+polygon(x=c(px2, rev(px2)), y=c(prx2$lo, rev(prx2$up)),
+        border=NA, col=poly.col)
+points(px2, prx2$mn, type="l", lwd=3)
+points(dx$dev, dx.pele$y, pch=use.pch, cex=pcex)
+add.silhouette(pele.img, x=0, y=40, width=0.3, adj=c(0,1))
+title(ylab=expression(italic("P. leucopus")~pop.~density~(n/ha)),
+      line=yline)
+# panel C: sihi detection vs. site age
+plot(dx$age, dx.sihi$y, type="n",
+     xlim=c(0, 90),
+     xlab="Site age (years)",
+     ylab="")
+title(main="C", adj=0, font.main=2, cex.main=2)
+polygon(x=c(px3, rev(px3)), y=c(prx3$lo, rev(prx3$up)),
+        border=NA, col=poly.col)
+points(px3, prx3$mn, type="l", lwd=3)
+## set random number seed for jitter
+set.seed(123)
+points(dx$age, jitter(dx.sihi$y, amount=0.02),
+       pch=use.pch, cex=pcex)
+add.silhouette(sihi.img, x=90, y=1, width=0.3, adj=c(1,1))
+title(ylab=expression(italic("S. hispidus")~detection~probability),
+      line=yline)
+# panel D: sihi detection vs. open land cover
+plot(dx$open, dx.sihi$y, type="n",
+     xlim=c(0, 55), 
+     xlab="Open land cover (%)",
+     ylab="")
+title(main="D", adj=0, font.main=2, cex.main=2)
+polygon(x=c(px4, rev(px4)), y=c(prx4$lo, rev(prx4$up)),
+        border=NA, col=poly.col)
+points(px4, prx4$mn, type="l", lwd=3)
+## set random number seed for jitter
+set.seed(123)
+points(dx$open, jitter(dx.sihi$y, amount=0.02),
+       pch=use.pch, cex=pcex)
+add.silhouette(sihi.img, x=55, y=0.95,
+               width=0.3, adj=c(1,1))
+title(ylab=expression(italic("S. hispidus")~detection~probability),
+      line=yline)
+# panel E: tast detection vs. developed land cover
+plot(dx$dev, dx.tast$y, type="n",
+     xlim=c(0, 100), 
+     xlab="Developed cover (%)",
+     ylab="")
+title(main="E", adj=0, font.main=2, cex.main=2)
+polygon(x=c(px5, rev(px5)), y=c(prx5$lo, rev(prx5$up)),
+        border=NA, col=poly.col)
+points(px5, prx5$mn, type="l", lwd=3)
+## set random number seed for jitter
+set.seed(123)
+points(dx$dev, jitter(dx.tast$y, amount=0.02),
+       pch=use.pch, cex=pcex)
+add.silhouette(tamias.img, x=0, y=1, width=0.25, adj=c(0,1))
+title(ylab=expression(italic("T. striatus")~detection~probability),
+      line=yline)
+# panel F: tast detection vs. perim
+plot(dx$perim, dx.tast$y, type="n",
+     xlim=c(0, 50), 
+     xlab="Perimeter imperviousness (%)",
+     ylab="")
+title(main="F", adj=0, font.main=2, cex.main=2)
+polygon(x=c(px6, rev(px6)), y=c(prx6$lo, rev(prx6$up)),
+        border=NA, col=poly.col)
+points(px6, prx6$mn, type="l", lwd=3)
+## set random number seed for jitter
+set.seed(123)
+points(dx$perim, jitter(dx.tast$y, amount=0.02),
+       pch=use.pch, cex=pcex)
+add.silhouette(tamias.img, x=30, y=0.95,
+               width=0.25, adj=c(0,1))
+title(ylab=expression(italic("T. striatus")~detection~probability),
+      line=yline)
+dev.off()
 
 
 ###########################################################
@@ -825,5 +971,29 @@ for(i in 1:12){
 }
 axis(side=2, at=y1, labels=splabs)
 dev.off()
+
+
+tiff("figures/figure-04-revision.tif", width=10.25,
+     height=5.3, units="in", res=800)
+set.seed(123)
+par(mar=c(5.1, 16.1, 1.1, 1.1), bty="n",
+    cex.axis=1.3, cex.lab=1.3, lend=1,
+    xpd=NA, las=1)
+plot(hmi, rep(1,23), type="n",
+     xlim=c(0.2, 1), ylim=c(0.5, 12.5),
+     yaxt="n", ylab="",
+     xlab="Human modification index (unitless)")
+segments(0.2, 1:12, 1, 1:12, lty=2, col="grey80")
+for(i in 1:12){
+    points(hmi, 
+           jitter(rep(y2[i], length(hmi)), amount=0.09),
+           pch=16,
+           col=ifelse(dm3[i,]==0, "transparent", "black"),
+           cex=1.5)
+}
+axis(side=2, at=y1, labels=splabs)
+dev.off()
+
+
 
 # end script!

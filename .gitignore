@@ -24,5 +24,8 @@ figures/derived/
 output/
 tables/
 
+# way too big
+*.tif
+
 # Optional: private notes
 docs/private_notes.md
