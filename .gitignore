@@ -4,7 +4,6 @@
 
 # RStudio project files
 .Rproj.user/
-*.Rproj
 
 # OS junk
 .DS_Store
