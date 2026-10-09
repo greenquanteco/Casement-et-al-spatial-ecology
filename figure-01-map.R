@@ -47,30 +47,6 @@ plot(buff1000)
 plot(humanc, add=TRUE)
 plot(sites, col="red", add=TRUE)
 
-
-# need better breaks
-brks1 <- c(0, 0.25, 0.5, 0.7, 0.8, 0.85, 0.9, 0.93, 0.96, 0.98, 1)
-brks2 <- quantile(
-    values(humanc),
-    probs = seq(0, 1, length.out = 11),
-    na.rm = TRUE
-)
-brks3 <- quantile(
-    values(humanc),
-    probs = c(0, .25, .5, .75, .9, .925, .95, .975, .99, .995, 1),
-    na.rm = TRUE
-)
-brks4 <- quantile(
-    values(humanc),
-    probs = c(seq(0, .9, .1), .925, .95, .975, .99, .995, 1),
-    na.rm = TRUE
-)
-par(mfrow=c(2,2), mar=c(4.1, 4.1, 1.1, 1.1))
-hist(humanc, breaks=brks2, main="Deciles")
-hist(humanc, breaks=brks1, main="Right v1")
-hist(humanc, breaks=brks3, main="Right v2")
-hist(humanc, breaks=brks4, main="Right v3")
-
 humanc <- round(humanc, 2)
 quantile(
     values(humanc),
@@ -130,16 +106,6 @@ plot(human80, col=c("grey90", "red"), legend=FALSE)
 brks <- c(seq(0, 1, by=0.1))
 cols <- hcl.colors(length(brks) - 1, palette = "Temps")
 plot(humanx, breaks=brks, col=cols, legend=FALSE)
-
-
-out.name <- "manuscript fig 1 map 2025-06-12.jpg"
-out.path <- paste(dat.dir, out.name, sep="/")
-jpeg(out.path, width=10, height=8, units="in", res=600)
-
-par(mar=c(0, 0, 0, 0))
-plot(buffs.p, axes=FALSE, legend=FALSE, border=NA)
-plot(humanx, add=TRUE, col=cols, breaks=brks,
-     axes=FALSE, legend=FALSE)
 
 cents <- centroids(sitesp)
 use.names <- c("beach", "cb", "clark",
@@ -296,8 +262,8 @@ dev.off()
 ###########################################
 
 
-tiff("figure-01-revision.tif", width=14, height=11,
-     units="in", res=600)
+tiff("figures/figure-01-revision.tif", width=14, height=11,
+     units="in", res=800, compression="lzw")
 layout(matrix(c(1,2), nrow=1), widths=c(7,1))
 par(mar=c(0, 0, 0, 0), lend=1, las=1, cex.axis=1.3)
 plot(buff1000, axes=FALSE, border=NA,

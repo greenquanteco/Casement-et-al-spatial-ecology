@@ -130,7 +130,8 @@ dev.off()
 # TIFF version
 tiff("figures/figure-02-revision.tif",
      width=9, height=6.5,
-     units="in", res=800)
+     units="in", res=800,
+     compression="lzw")
 par(mar=c(0.1, 0.1, 0.1, 0.1), lend=1,
     las=1, bty="n")
 plot(NA, xlim=c(0.5, n+0.5),
@@ -736,7 +737,8 @@ dev.off()
 # TIFF version for revisions
 tiff("figures/figure-03-revision.tif",
      width=7.3, height=8.4,
-     units="in", res=800)
+     units="in", res=800,
+     compression="lzw")
 par(mfrow=c(3,2), mar=c(5.1, 6.1, 1.1, 1.1), 
     bty="n", lend=1, las=1,
     oma=c(0, 1, 2, 0),
@@ -994,6 +996,52 @@ for(i in 1:12){
 axis(side=2, at=y1, labels=splabs)
 dev.off()
 
+
+
+
+jpeg("figures/figure-04-revision.jpg", width=10.25,
+     height=5.3, units="in", res=800)
+set.seed(123)
+par(mar=c(5.1, 16.1, 1.1, 1.1), bty="n",
+    cex.axis=1.3, cex.lab=1.3, lend=1,
+    xpd=NA, las=1)
+plot(hmi, rep(1,23), type="n",
+     xlim=c(0.2, 1), ylim=c(0.5, 12.5),
+     yaxt="n", ylab="",
+     xlab="Human modification index (unitless)")
+segments(0.2, 1:12, 1, 1:12, lty=2, col="grey80")
+for(i in 1:12){
+  points(hmi, 
+         jitter(rep(y2[i], length(hmi)), amount=0.09),
+         pch=16,
+         col=ifelse(dm3[i,]==0, "transparent", "black"),
+         cex=1.5)
+}
+axis(side=2, at=y1, labels=splabs)
+dev.off()
+
+
+tiff("figures/figure-04-revision.tif", width=10.25,
+     height=5.3, units="in", res=800,
+     compression="lzw")
+set.seed(123)
+par(mar=c(5.1, 16.1, 1.1, 1.1), bty="n",
+    cex.axis=1.3, cex.lab=1.3, lend=1,
+    xpd=NA, las=1)
+plot(hmi, rep(1,23), type="n",
+     xlim=c(0.2, 1), ylim=c(0.5, 12.5),
+     yaxt="n", ylab="",
+     xlab="Human modification index (unitless)")
+segments(0.2, 1:12, 1, 1:12, lty=2, col="grey80")
+for(i in 1:12){
+  points(hmi, 
+         jitter(rep(y2[i], length(hmi)), amount=0.09),
+         pch=16,
+         col=ifelse(dm3[i,]==0, "transparent", "black"),
+         cex=1.5)
+}
+axis(side=2, at=y1, labels=splabs)
+dev.off()
 
 
 # end script!
